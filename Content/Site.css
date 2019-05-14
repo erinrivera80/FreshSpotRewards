@@ -1,0 +1,180 @@
+﻿@font-face {
+    font-family: 'Bemio';
+    src: url('../fonts/Bemio.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: black !important;
+    color: white !important;
+}
+
+/* Set padding to keep content from hitting the edges */
+
+
+/* NAVBAR STYLING */
+.navbar {
+    background-color: red;
+    align-content: center;
+    height: 6em;
+}
+
+.navbar-nav a {
+    color: white;
+    font-size: 30px;
+    margin: 8px 25px;
+}
+
+.nav-logo img
+{
+    height: 60px;
+}
+
+.nav-icon {
+    padding-left: 1em;
+    height: 50px;
+}
+
+.navbar-collapse {
+    padding-top: 1em;
+}
+
+.icon-bar {
+    background-color: white;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 400px;
+    line-height: 30px;
+}
+
+.top-row {
+    padding-top: 3em;
+}
+
+.bkgd {
+    background: url('../Assets/hottiefslogo.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 600px;
+}
+
+.right-col {
+    height: auto;
+    width: auto;
+    text-align: center;
+}
+
+.main-cta {
+    font-size: 50px;
+    font-family: 'Bemio', sans-serif;
+    padding: 0.75em 0;
+}
+
+.logo-cta {
+    width: 250px;
+}
+
+.sub-cta {
+    padding: 0.75em 0;
+    line-height: 1.5;
+}
+
+.enrollment-form {
+    color: white !important;
+}
+
+.form-horizontal {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.form-section {
+    font-size: 25px;
+    opacity: 1;
+    z-index: 100;
+}
+
+.formbox {
+    margin-bottom: 2em;
+}
+
+.form-indent {
+    margin-top: 1em;
+    margin-left: 2em;
+}
+
+.numval {
+    justify-content: center;
+}
+
+.verBtn {
+    background-color: red;
+    color: white;
+}
+
+.subBtn {
+    background-color: #4adb3b;
+    color: white;
+}
+
+/* THANKS PAGE STYLING*/
+.thanks-page {
+    width: 100%;
+    height: 500px;
+    margin: 0 auto;
+}
+
+.thanks {
+    font-size: 20px;
+    width: 80%;
+}
+
+
+/* MEDIA QUERIES */
+/*@media (max-width: 1200px) {
+    .signUpNow {
+        font-size: 50px;
+        margin: -5em 0 0 6em;
+    }
+}
+
+@media (max-width: 900px) {
+    .signUpNow {
+        font-size: 40px;
+        margin: -3em 0 0 4em;
+    }
+}
+
+@media (max-width: 601px) {
+    .signUpNow {
+        font-size: 40px;
+        margin: -3em 0 0 1em;
+    }
+}
+
+@media (max-width: 600px) {
+    .signUpNow {
+        font-size: 30px;
+        margin: -3em 0 0 1em;
+    }
+}*/

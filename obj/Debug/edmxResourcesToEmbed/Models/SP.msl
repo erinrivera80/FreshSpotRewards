@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Ebase5ModelStoreContainer" CdmEntityContainer="Ebase5Entities">
+    <FunctionImportMapping FunctionImportName="GetNextAvailableCardIDByLocationCategory_S_EC" FunctionName="Ebase5Model.Store.GetNextAvailableCardIDByLocationCategory_S_EC" />
+    <FunctionImportMapping FunctionImportName="LoyaltyDetailRewardOptIn_S_EC" FunctionName="Ebase5Model.Store.LoyaltyDetailRewardOptIn_S_EC" />
+    <FunctionImportMapping FunctionImportName="GetNextCardID" FunctionName="Ebase5Model.Store.GetNextAvailableCardIDByLocationCategory_S_EC" />
+    <FunctionImportMapping FunctionImportName="LoyaltyOptIn" FunctionName="Ebase5Model.Store.LoyaltyDetailRewardOptIn_S_EC" />
+  </EntityContainerMapping>
+</Mapping>

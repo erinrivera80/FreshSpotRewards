@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Spot Rewards</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Titan+One" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-expand-lg">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*@Html.ActionLink("Fresh Spot Rewards", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+                <div class="mr-auto">
+                    <a  class="nav-logo navbar-brand" href="@Url.Action("Index", "Home")">
+                        <img src="~/Assets/freshSpotLogo.png"  alt="Fresh Spot logo" />
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                </ul>
+                <div class=" navbar-right">
+                    <a href="https://www.facebook.com/HotSpotStores" target="_blank">
+                        <img class="nav-icon" src="~/Assets/icon-fb.png" />
+                    </a>
+                    <a href="https://twitter.com/HotSpotStores" target="_blank">
+                        <img class="nav-icon" src="~/Assets/icon-tw.png" />
+                    </a>
+                    <a href="https://www.instagram.com/hotspotcstore/?hl=en" target="_blank">
+                        <img class="nav-icon" src="~/Assets/icon-ig.png" />
+                    </a>
+                    <a href="https://www.youtube.com/user/HotSpotStores" target="_blank">
+                        <img class="nav-icon" src="~/Assets/icon-yt.png" />
+                    </a>
+                    <a href="http://www.hotspotcstore.com" target="_blank">
+                        <img class="nav-icon" src="~/Assets/HSLogoBlackWhite.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        @RenderBody()
+        <hr />
+        <footer class="container">
+            <div class="disclaimer">Disclaimer: Valid at participating locations only. We will never sell or trade your information, which will only be used
+            for the purpose of this loyalty program. Enter your mobile phone number as your alternate ID at the point of sale to redeem your free Hunk A Pizza&reg;
+            Limit one free Hunk A Pizza&reg; per participant. Void where prohibited.</div>
+            <p>&copy; @DateTime.Now.Year - Electrum LLC</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

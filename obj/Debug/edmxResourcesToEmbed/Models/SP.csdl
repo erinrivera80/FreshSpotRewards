@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Ebase5Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Ebase5Entities" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="GetNextAvailableCardIDByLocationCategory_S_EC">
+      <Parameter Name="ProgramID" Mode="In" Type="Int32" />
+      <Parameter Name="CategoryID" Mode="In" Type="Int32" />
+      <Parameter Name="CardID" Mode="InOut" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="LoyaltyDetailRewardOptIn_S_EC">
+      <Parameter Name="LoyaltyDetailRewardSKUGroupIDs" Mode="In" Type="String" />
+      <Parameter Name="CardID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetNextCardID" ReturnType="Collection(Int32)">
+      <Parameter Name="ProgramID" Mode="In" Type="Int32" />
+      <Parameter Name="CategoryID" Mode="In" Type="Int32" />
+      <Parameter Name="CardID" Mode="InOut" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="LoyaltyOptIn">
+      <Parameter Name="LoyaltyDetailRewardSKUGroupIDs" Mode="In" Type="String" />
+      <Parameter Name="CardID" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+</Schema>

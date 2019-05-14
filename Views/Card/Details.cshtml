@@ -1,0 +1,818 @@
+﻿@model FreshSpotRewardsWebApp.Models.Card
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Card</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.EntityID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EntityID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EntityCategoryID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EntityCategoryID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ProgramID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ProgramID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ServiceContractID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ServiceContractID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SalesContractID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SalesContractID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CustomerID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PersonID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CardBinID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CardBinID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CardTypeID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CardTypeID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SalesOrgID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SalesOrgID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.MerchantID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.MerchantID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.LocationID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.LocationID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.M_IDNUM)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.M_IDNUM)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.L_IDNUM)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.L_IDNUM)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.C_IDNUM)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.C_IDNUM)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_PREFIX)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_PREFIX)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_ACCT)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_ACCT)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ACCT_NUM)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ACCT_NUM)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AccountNumber)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AccountNumber)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CardMag)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CardMag)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PIN)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PIN)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.IVRWEBPIN)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.IVRWEBPIN)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_STATUS)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_STATUS)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_NOTES)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_NOTES)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_OTB)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_OTB)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_PADOTB)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_PADOTB)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_SSN)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_SSN)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_CCTYPE)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_CCTYPE)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_CCNUM)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_CCNUM)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_CCEXP)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_CCEXP)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ExpDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ExpDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_DOB)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_DOB)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EmployeeID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EmployeeID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_EDATE)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_EDATE)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_SALUT)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_SALUT)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_FNAME)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_FNAME)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_INITIAL)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_INITIAL)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_LNAME)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_LNAME)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_HADDR1)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_HADDR1)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_HADDR2)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_HADDR2)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_HCITY)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_HCITY)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_HSTATE)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_HSTATE)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_HZIP)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_HZIP)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_HPHONE)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_HPHONE)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_WADDR1)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_WADDR1)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_WADDR2)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_WADDR2)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_WCITY)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_WCITY)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_WSTATE)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_WSTATE)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_WZIP)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_WZIP)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_WPHONE)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_WPHONE)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DL_STATE)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DL_STATE)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DL_NUM)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DL_NUM)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.RESERVED1)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.RESERVED1)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.RESERVED2)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.RESERVED2)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.RESERVED3)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.RESERVED3)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.RESERVED4)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.RESERVED4)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.RESERVED5)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.RESERVED5)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CP_CODE)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CP_CODE)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.IssuerID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.IssuerID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SecretWord)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SecretWord)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.GENDER)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.GENDER)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EDUCATION)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EDUCATION)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.INCOME)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.INCOME)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ADULTS)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ADULTS)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.BillCardDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.BillCardDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AddDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AddDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ChangeDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ChangeDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ACHPosttDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ACHPosttDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.phonefax)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.phonefax)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.email)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.email)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DateOfBirth)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CountryID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CountryID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Service)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Service)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.VelocityHitCount)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.VelocityHitCount)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.VelocityPeriod)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.VelocityPeriod)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.BillPayExternalID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.BillPayExternalID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Balance)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Balance)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstTransactionDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FirstTransactionDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstLoadTransEnterEDID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FirstLoadTransEnterEDID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AssociatedCardID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AssociatedCardID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ActivateID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ActivateID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ActivationCategoryID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ActivationCategoryID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CardIDAssignDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CardIDAssignDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PrivacyLevel)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PrivacyLevel)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ReplacementCard)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ReplacementCard)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CommunicationsDeliveryCategoryID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CommunicationsDeliveryCategoryID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CardIssuerID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CardIssuerID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PreviousCustomerID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PreviousCustomerID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CardRelationshipCategoryID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CardRelationshipCategoryID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EnrollmentLocationID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EnrollmentLocationID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CH_MPHONE)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CH_MPHONE)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AccountBarCode)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AccountBarCode)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PayEnableDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PayEnableDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EmailConfirmed)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EmailConfirmed)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EmailValidationCategoryID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EmailValidationCategoryID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.LastTransDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.LastTransDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.MobilePhoneValidationCategoryID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.MobilePhoneValidationCategoryID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EmailValidationPointsAwarded)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EmailValidationPointsAwarded)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.MobilePhoneValidationPointsAwarded)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.MobilePhoneValidationPointsAwarded)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.CardID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

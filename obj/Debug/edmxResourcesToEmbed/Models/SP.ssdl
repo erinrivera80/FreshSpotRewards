@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Ebase5Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <Function Name="GetNextAvailableCardIDByLocationCategory_S_EC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ProgramID" Type="int" Mode="In" />
+    <Parameter Name="CategoryID" Type="int" Mode="In" />
+    <Parameter Name="CardID" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="LoyaltyDetailRewardOptIn_S_EC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="LoyaltyDetailRewardSKUGroupIDs" Type="varchar" Mode="In" />
+    <Parameter Name="CardID" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="Ebase5ModelStoreContainer" />
+</Schema>
