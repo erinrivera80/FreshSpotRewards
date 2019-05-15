@@ -20,5 +20,16 @@ namespace FreshSpotRewardsWebApp.Controllers
             return View();
         }
 
+        public ActionResult PriorSignIn()
+        {
+            return View();
+        }
+
+        public ActionResult VerCodeIncorrect()
+        {
+            ViewBag.VerError = "The verification code was incorrect. Please reenter the code and try again.";
+            return View();
+        }
+
     }
 }

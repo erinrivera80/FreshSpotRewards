@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Fresh Spot Rewards";
+    ViewBag.VerError;
 }
 <div class="container">
     <div class="row top-row">
@@ -27,7 +28,7 @@
 
             <div class="form-horizontal text-white">
                 <div class="form-section container">
-                    
+
                     <div class="form-group formbox mt-5">
                         @Html.LabelFor(m => m.Email, "Email Address", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
                         <div class="col-md-8">
@@ -44,8 +45,8 @@
 
                     <div class="form-group formbox">
                         <div class="col-md-offset-5">
-                            <input type="button" class="btn verBtn" id="verBtn" value="Text Verification Code"
-                                   onclick="this.value='Resend Verification Code'"/>
+                            <input type="button" class="btn verBtn" id="verBtnGet" value="Text Verification Code"
+                                   onclick="this.value = 'Resend Verification Code'; document.getElementById('verBtnPost').style.display = 'block';" />
                         </div>
                     </div>
 
@@ -56,6 +57,10 @@
                         </div>
                     </div>
 
+                    <div id="ver-error" class="ver-error">
+                        <p>@ViewBag.VerError</p>
+                    </div>
+
                     <div class="form-indent container">
                         <div class="form-group formbox form-check mt-5">
                             <input type="checkbox" class="form-check" id="OptIn" onchange="document.getElementById('fsrSubmit').disabled = !this.checked" />
@@ -64,11 +69,14 @@
 
 
                         <div class="form-group formbox mt-5">
-                            <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Sign Me Up!" disabled>
+                            <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Sign Me Up!" disabled 
+                                   onclick="document.getElementById('ver-error').style.display = 'none'">
                         </div>
                     </div>
-                        @*@Html.HiddenFor(m => m.ProgramID, new { value = Request.Params["programID"] })
-                        @Html.HiddenFor(m => m.SKUGroups, new { value = Request.Params["skuGroups"] })*@
+
+                    @*@Html.HiddenFor(m => m.ProgramID, new { value = Request.Params["programID"] })
+        @Html.HiddenFor(m => m.SKUGroups, new { value = Request.Params["skuGroups"] })*@
+
                 </div>
             </div>
 
@@ -79,4 +87,6 @@
 
 <script type="text/javascript">
     document.getElementById('OptIn').checked = false;
+    document.getElementById('verBtnPost').style.display = "none";
+    }
 </script>

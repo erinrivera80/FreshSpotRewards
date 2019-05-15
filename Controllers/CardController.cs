@@ -24,15 +24,13 @@ namespace FreshSpotRewardsWebApp.Controllers
         }
 
         // POST: Card/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Card card)
         {
             if (ModelState.IsValid)
             {
-                CheckForHSRNumber(card);
+                CheckVerificationNumber(card);
                 return RedirectToAction("Thanks", "Home");
             }
             return RedirectToAction("Thanks", "Home");
@@ -52,11 +50,15 @@ namespace FreshSpotRewardsWebApp.Controllers
                 {
                     RedirectToAction("PriorOptIn", "Home");
                 }
+                else
+                {
+                    CheckForHSRNumber(card);
+                }
             }
         }
 
         // checks if mobile number verification entered by user is correct
-        public int CheckVerificationNumber(Card card, int validation)
+        public void CheckVerificationNumber(Card card)
         {
             using (LoyayContext context = new LoyayContext())
             {
@@ -68,15 +70,22 @@ namespace FreshSpotRewardsWebApp.Controllers
                 {
                     SqlDbType = SqlDbType.Int
                 };
-                SqlParameter validCode = new SqlParameter("@ValidationCode", validation)
+                SqlParameter validCode = new SqlParameter("@ValidationCode", card.VerificationCode)
                 {
                     SqlDbType = SqlDbType.VarChar
                 };
 
                 var result = context.Database.ExecuteSqlCommand("CheckMobileValidationCode_S_EC @MobileNumber, @CardID, @ValidationCode",
                     mobNum, cardID, validCode);
-
-                return result;
+                
+                if (result == -1)
+                {
+                    RedirectToAction("VerCodeIncorrect", "Home");
+                }
+                else
+                {
+                    CheckForLDROptIn(card);
+                }
             }
         }
 
@@ -101,7 +110,7 @@ namespace FreshSpotRewardsWebApp.Controllers
             }
         }
 
-
+        // Get next unassigned Loyay card
         public void GetNextCard(Card card)
         {
             using (LoyayContext context = new LoyayContext())
@@ -130,7 +139,7 @@ namespace FreshSpotRewardsWebApp.Controllers
             EnrollFreshSpotRewards(card);
         }
 
-
+        // Adds email and mobile number to new Card record
         public void UpdateCardData(Card card)
         {
             using (LoyayContext context = new LoyayContext())
@@ -145,6 +154,7 @@ namespace FreshSpotRewardsWebApp.Controllers
             }
         }
 
+        // Enrolls non-Hot Spot members in the Fresh Spot Rewards club
         public void EnrollFreshSpotRewards(Card card)
         {
             using (var context = new LoyayContext())
