@@ -30,10 +30,10 @@ namespace FreshSpotRewardsWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                CheckVerificationNumber(card);
+                CheckForLDROptIn(card);
                 return RedirectToAction("Thanks", "Home");
             }
-            return RedirectToAction("Thanks", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         // check LoyaltyDetailRewardsOptIn_T_EC for MobileNumber to check for prior optin
@@ -57,41 +57,9 @@ namespace FreshSpotRewardsWebApp.Controllers
             }
         }
 
-        // checks if mobile number verification entered by user is correct
-        public void CheckVerificationNumber(Card card)
-        {
-            using (LoyayContext context = new LoyayContext())
-            {
-                SqlParameter mobNum = new SqlParameter("@MobileNumber", card.CH_MPHONE)
-                {
-                    SqlDbType = SqlDbType.VarChar
-                };
-                SqlParameter cardID = new SqlParameter("@CardID", card.CardID)
-                {
-                    SqlDbType = SqlDbType.Int
-                };
-                SqlParameter validCode = new SqlParameter("@ValidationCode", card.VerificationCode)
-                {
-                    SqlDbType = SqlDbType.VarChar
-                };
-
-                var result = context.Database.ExecuteSqlCommand("CheckMobileValidationCode_S_EC @MobileNumber, @CardID, @ValidationCode",
-                    mobNum, cardID, validCode);
-                
-                if (result == -1)
-                {
-                    RedirectToAction("VerCodeIncorrect", "Home");
-                }
-                else
-                {
-                    CheckForLDROptIn(card);
-                }
-            }
-        }
-
         // check Card table for HotSpotRewards card
         public void CheckForHSRNumber(Card card)
-        { 
+        {
             using (LoyayContext context = new LoyayContext())
             {
                 var oldCard = new Card();
@@ -101,7 +69,9 @@ namespace FreshSpotRewardsWebApp.Controllers
                     .FirstOrDefault();
                 if (oldCard != null)
                 {
-                    EnrollFreshSpotRewards(oldCard);
+                    oldCard.CH_MPHONE = card.CH_MPHONE;
+                    oldCard.VerificationCode = card.VerificationCode;
+                    CheckVerificationNumber(oldCard);
                 }
                 else
                 {
@@ -136,7 +106,7 @@ namespace FreshSpotRewardsWebApp.Controllers
             }
 
             UpdateCardData(card);
-            EnrollFreshSpotRewards(card);
+            CheckVerificationNumber(card);
         }
 
         // Adds email and mobile number to new Card record
@@ -149,7 +119,67 @@ namespace FreshSpotRewardsWebApp.Controllers
                 {
                     dbCard.CH_MPHONE = card.CH_MPHONE;
                     dbCard.Email = card.Email;
+                    dbCard.AddDate = DateTime.Now;
                     context.SaveChanges();
+                }
+            }
+        }
+
+        public void SendVerificationCode(Card card)
+        {
+            using (LoyayContext context = new LoyayContext())
+            {
+                SqlParameter cardID = new SqlParameter("@CardID", card.CardID)
+                {
+                    SqlDbType = SqlDbType.Int
+                };
+
+                var result = context.Database.ExecuteSqlCommand("SendMobilePhoneValidationCodeText_S_EC @CardID", cardID);
+
+                if (result == 1)
+                {
+                    CheckVerificationNumber(card);
+                }
+                else
+                {
+                    RedirectToAction("Error", "Home", new
+                    {
+                        errorMsg = "Verification code text could not be sent. Please click 'Resend Verification Code'. " +
+                        "If problem persists, please try again later."
+                    });
+                }
+            }
+        }
+
+
+        // checks if mobile number verification entered by user is correct
+        public void CheckVerificationNumber(Card card)
+        {
+            using (LoyayContext context = new LoyayContext())
+            {
+                SqlParameter mobNum = new SqlParameter("@MobileNumber", card.CH_MPHONE)
+                {
+                    SqlDbType = SqlDbType.VarChar
+                };
+                SqlParameter cardID = new SqlParameter("@CardID", card.CardID)
+                {
+                    SqlDbType = SqlDbType.Int
+                };
+                SqlParameter validCode = new SqlParameter("@ValidationCode", card.VerificationCode)
+                {
+                    SqlDbType = SqlDbType.VarChar
+                };
+
+                var result = context.Database.ExecuteSqlCommand("CheckMobileValidationCode_S_EC @MobileNumber, @CardID, @ValidationCode",
+                    mobNum, cardID, validCode);
+
+                if (result == 0)
+                {
+                    EnrollFreshSpotRewards(card);
+                }
+                else
+                {
+                    RedirectToAction("Error", "Home", new { errorMsg = "Verification Code is incorrect. Please try again."});
                 }
             }
         }

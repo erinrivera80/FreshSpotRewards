@@ -25,10 +25,10 @@ namespace FreshSpotRewardsWebApp.Controllers
             return View();
         }
 
-        public ActionResult VerCodeIncorrect()
+        public ActionResult Error(string errorMsg)
         {
-            ViewBag.VerError = "The verification code was incorrect. Please reenter the code and try again.";
-            return View();
+            ViewBag.VerError = errorMsg;
+            return View("Index", "Home");
         }
 
     }
