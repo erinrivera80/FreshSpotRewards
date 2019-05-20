@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreshSpotRewardsWebApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,12 @@ namespace FreshSpotRewardsWebApp.Controllers
     {
         public ActionResult Index()
         {
+            return View();
+        }
+
+        public ActionResult CardIndex(Card card)
+        {
+            ViewBag.MobNum = card.CH_MPHONE;
             return View();
         }
 
@@ -29,6 +36,11 @@ namespace FreshSpotRewardsWebApp.Controllers
         {
             ViewBag.VerError = errorMsg;
             return View("Index", "Home");
+        }
+
+        public ActionResult Verify()
+        {
+            return View();
         }
 
     }

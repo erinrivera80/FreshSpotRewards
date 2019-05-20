@@ -2,17 +2,21 @@
 
 @{
     ViewBag.Title = "Fresh Spot Rewards";
+    ViewBag.CreateError = "";
+    ViewBag.SendError = "";
     ViewBag.VerError = "";
 }
+
+
 <div class="container">
     <div class="row top-row">
-        <div class ="bkgd col-lg-5"> </div>
+        <div class="bkgd col-lg-5"> </div>
         <div class="col-lg-1"> </div>
-        <div class ="right-col col-lg-6">
+        <div class="right-col col-lg-6">
             <h4>Use your mobile number to earn FREE pizza!</h4>
 
             <h1 class="main-cta">Sign up now for Fresh Spot Rewards, and get a FREE Hunk A Pizza&reg;!</h1>
-            
+
             <h3 class="sub-cta">Enter your mobile number when you purchase Hunt Brothers Pizza and get a free Hunk or whole pizza for every 7 you buy.</h3>
         </div>
     </div>
@@ -21,13 +25,12 @@
 <div class="container">
 
     <div class="enrollment-form">
-
         @using (Html.BeginForm("Create", "Card", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
-
+            
             <div class="form-horizontal text-white">
-                <div class="form-section container">
+                <div class="form-section container" id="signUpDiv">
 
                     <div class="form-group formbox mt-5">
                         @Html.LabelFor(m => m.Email, "Email Address", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
@@ -35,66 +38,99 @@
                             @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control required" } })
                         </div>
                     </div>
-
                     <div class="form-group formbox mt-5">
                         @Html.LabelFor(m => m.CH_MPHONE, "Mobile Number", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
                         <div class="col-md-8">
-                            @Html.EditorFor(m => m.CH_MPHONE, new { htmlAttributes = new { @class = "form-control required" } })
+                            @Html.EditorFor(m => m.CH_MPHONE, new { htmlAttributes = new { @class = "form-control required", @id = "mobNumBox1"} })
                         </div>
                     </div>
-
-                    <div class="form-group formbox">
-                        <div class="col-md-offset-5">
-                            <input type="button" class="btn verBtn" id="verBtnGet" value="Text Verification Code"
-                                   onclick="this.value = 'Resend Verification Code'; document.getElementById('verBtnPost').style.display = 'block';" />
-                        </div>
-                    </div>
-
-                    <div class="form-group formbox mt-5">
-                        @Html.LabelFor(m => m.VerificationCode, "Verification Code", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(m => m.VerificationCode, new { htmlAttributes = new { @class = "form-control required text-black" } })
-                        </div>
-                    </div>
-
-
-                    @*<div class="form-group formbox">
-                        <label for="verCode" class="control-label col-md-4">Verification Code</label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control required" id="verificationCode" />
-                        </div>
-                    </div>*@
-
-                    <div id="ver-error" class="ver-error">
-                        <p>@ViewBag.VerError</p>
-                    </div>
-
-                    <div class="form-indent container">
-                        <div class="form-group formbox form-check mt-5">
-                            <input type="checkbox" class="form-check" id="OptIn" onchange="document.getElementById('fsrSubmit').disabled = !this.checked" />
-                            <label class="form-check-label" for="OptIn">Sign me up for Fresh Spot Rewards and give me a free Hunk A Pizza&reg;!</label>
-                        </div>
-
-
                         <div class="form-group formbox mt-5">
-                            <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Sign Me Up!" disabled 
-                                   onclick="document.getElementById('ver-error').style.display = 'none'">
+                            <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Sign Me Up!"
+                                   onclick="signUpClick()"/>
                         </div>
+                    <div class="error">
+                        @ViewBag.CreateError
                     </div>
-
-                    @*@Html.HiddenFor(m => m.ProgramID, new { value = Request.Params["programID"] })
-        @Html.HiddenFor(m => m.SKUGroups, new { value = Request.Params["skuGroups"] })*@
-
+                    
                 </div>
             </div>
-
         }
-    </div>
 
+        <div class="hidden" id="mobNumPanel">
+            @using (Html.BeginForm("SendVerificationCode", "Card", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal text-white">
+                    <div class="form-section container" id="signUpDiv">
+                        <p> A six-digit confirmation code will sent via text to your number. If this number is incorrect, please correct it below.</p>
+                        <div class="form-group formbox mt-5">
+                            @Html.LabelFor(m => m.CH_MPHONE, "Mobile Number", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(m => m.CH_MPHONE, new { htmlAttributes = new { @class = "form-control required", @id = "mobNumBox2"} })
+                            </div>
+                        </div>
+
+                        <div class="form-group formbox mt-5">
+                            <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Send Code" 
+                                   onclick="sendCodeClick()"/>
+                        </div>
+                        <div class="error">
+                            @ViewBag.SendError;
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="hidden" id="verifyPanel">
+            @using (Html.BeginForm("CheckVerificationNumber", "Card", FormMethod.Post))
+            {
+                <div class="form-horizontal text-white">
+                    <div class="form-section container" id="verifyDiv">
+                        <div class="form-group formbox mt-5">
+                            @Html.LabelFor(m => m.VerificationCode, "Verification Code", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(m => m.VerificationCode, new { htmlAttributes = new { @class = "form-control required" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group formbox mt-5">
+                            <input type="submit" class="btn btn-lg subBtn formbox" id="verifySubmit" value="Verify Code"
+                                   onclick="verifyCodeClick()" />
+                        </div>
+                        <div class="error">
+                            @ViewBag.VerError
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
-    document.getElementById('OptIn').checked = false;
-    document.getElementById('verBtnPost').style.display = "none";
-    }
+
+    function signUpClick() {
+        $('#signUpDiv').addClass('hidden');
+        $('#mobNumPanel').removeClass('hidden');
+    };
+
+    function sendCodeClick() {
+        $('#mobNumPanel').addClass('hidden');
+        $('#verifyPanel').removeClass('hidden');
+    };
+
+    function verifyCodeClick() {
+
+    };
+
+    var numInput = document.getElementById('mobNumBox1');
+    var numCopy = document.getElementById('mobNumBox2');
+    numInput.onkeyup = function () {
+        numCopy.value = numInput.value;
+    };
+
 </script>
+
+
+

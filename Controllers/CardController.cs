@@ -16,6 +16,7 @@ namespace FreshSpotRewardsWebApp.Controllers
     {
         private readonly string skuGroups = "1017353,1017368,1017369,1017371,1017370,1017372";
 
+
         // GET: Card/Create
         public ActionResult Create()
         {
@@ -31,9 +32,8 @@ namespace FreshSpotRewardsWebApp.Controllers
             if (ModelState.IsValid)
             {
                 CheckForLDROptIn(card);
-                return RedirectToAction("Thanks", "Home");
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Error", "Home");
         }
 
         // check LoyaltyDetailRewardsOptIn_T_EC for MobileNumber to check for prior optin
@@ -70,8 +70,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                 if (oldCard != null)
                 {
                     oldCard.CH_MPHONE = card.CH_MPHONE;
-                    oldCard.VerificationCode = card.VerificationCode;
-                    CheckVerificationNumber(oldCard);
+                    UpdateCardData(card);
                 }
                 else
                 {
@@ -106,11 +105,10 @@ namespace FreshSpotRewardsWebApp.Controllers
             }
 
             UpdateCardData(card);
-            CheckVerificationNumber(card);
         }
 
         // Adds email and mobile number to new Card record
-        public void UpdateCardData(Card card)
+        public Card UpdateCardData(Card card)
         {
             using (LoyayContext context = new LoyayContext())
             {
@@ -122,9 +120,29 @@ namespace FreshSpotRewardsWebApp.Controllers
                     dbCard.AddDate = DateTime.Now;
                     context.SaveChanges();
                 }
+                EnrollFreshSpotRewards(card);
+                return card;
             }
         }
 
+        // Enrolls in either FSR or the combo-club for Reward Spot members
+        public void EnrollFreshSpotRewards(Card card)
+        {
+            using (var context = new LoyayContext())
+            {
+                // TO-DO: Add mobile number parameter
+                SqlParameter skus = new SqlParameter("@SkuGroups", skuGroups);
+                SqlParameter cardID = new SqlParameter("@CardID", card.CardID);
+                var query = context.Database.ExecuteSqlCommand("LoyaltyDetailRewardOptIn_S_EC @SkuGroups, @CardID", skus, cardID);
+            }
+
+            RedirectToAction("Thanks", "Home");
+        }
+
+        //END - function chain for initial sign up page
+
+        // BEGIN - function chain for Verification code chain
+        // Sends verification code via text
         public void SendVerificationCode(Card card)
         {
             using (LoyayContext context = new LoyayContext())
@@ -136,13 +154,9 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                 var result = context.Database.ExecuteSqlCommand("SendMobilePhoneValidationCodeText_S_EC @CardID", cardID);
 
-                if (result == 1)
+                if (result != 1)
                 {
-                    CheckVerificationNumber(card);
-                }
-                else
-                {
-                    RedirectToAction("Error", "Home", new
+                    RedirectToAction("Verify", new
                     {
                         errorMsg = "Verification code text could not be sent. Please click 'Resend Verification Code'. " +
                         "If problem persists, please try again later."
@@ -175,27 +189,13 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                 if (result == 0)
                 {
-                    EnrollFreshSpotRewards(card);
+                    RedirectToAction("Thanks", "Home");
                 }
                 else
                 {
                     RedirectToAction("Error", "Home", new { errorMsg = "Verification Code is incorrect. Please try again."});
                 }
             }
-        }
-
-        // Enrolls non-Hot Spot members in the Fresh Spot Rewards club
-        public void EnrollFreshSpotRewards(Card card)
-        {
-            using (var context = new LoyayContext())
-            {
-                // TO-DO: Add mobile number parameter
-                SqlParameter skus = new SqlParameter("@SkuGroups", skuGroups);
-                SqlParameter cardID = new SqlParameter("@CardID", card.CardID);
-                var query = context.Database.ExecuteSqlCommand("LoyaltyDetailRewardOptIn_S_EC @SkuGroups, @CardID", skus, cardID);
-            }
-
-            RedirectToAction("Thanks", "Home");
         }
     }
 }
