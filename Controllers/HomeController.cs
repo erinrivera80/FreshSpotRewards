@@ -35,12 +35,18 @@ namespace FreshSpotRewardsWebApp.Controllers
         public ActionResult Error(string errorMsg)
         {
             ViewBag.VerError = errorMsg;
-            return View("Index", "Home");
+            return View("Error", "Home");
         }
 
-        public ActionResult Verify()
+        public ActionResult Verify(Card card)
         {
-            return View();
+            ViewBag.MobileNumber = card.CH_MPHONE;
+            return View(card);
+        }
+
+        public ActionResult Confirm(Card card)
+        {
+            return View("Confirm", "Home", card);
         }
 
     }

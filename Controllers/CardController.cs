@@ -16,7 +16,7 @@ namespace FreshSpotRewardsWebApp.Controllers
     {
         private readonly string skuGroups = "1017353,1017368,1017369,1017371,1017370,1017372";
 
-
+        
         // GET: Card/Create
         public ActionResult Create()
         {
@@ -33,17 +33,7 @@ namespace FreshSpotRewardsWebApp.Controllers
             {
                 CheckForLDROptIn(card);
             }
-            return View("Index", "Home", card);
-        }
-
-        [ValidateAntiForgeryToken]
-        public Card Enroll(Card card)
-        {
-            if (ModelState.IsValid)
-            {
-                CheckForLDROptIn(card);
-            }
-            return card;
+            return RedirectToAction("Verify", "Home", card);
         }
 
         // check LoyaltyDetailRewardsOptIn_T_EC for MobileNumber to check for prior optin
@@ -144,17 +134,26 @@ namespace FreshSpotRewardsWebApp.Controllers
                 SqlParameter skus = new SqlParameter("@SkuGroups", skuGroups);
                 SqlParameter cardID = new SqlParameter("@CardID", card.CardID);
                 var query = context.Database.ExecuteSqlCommand("LoyaltyDetailRewardOptIn_S_EC @SkuGroups, @CardID", skus, cardID);
+                
             };
+        }
+
+        public void SaveCardToSession(Card card)
+        {
+            Card cardData = new Card();
+            cardData = card;
+            Session["Card"] = cardData;
         }
 
         //END - function chain for initial sign up page
 
         // BEGIN - function chain for Verification code chain
         // Sends verification code via text
-        public void SendVerificationCode(Card card)
+        public ActionResult SendVerificationCode(Card currentCard)
         {
             using (LoyayContext context = new LoyayContext())
             {
+                var card = currentCard;
                 SqlParameter cardID = new SqlParameter("@CardID", card.CardID)
                 {
                     SqlDbType = SqlDbType.Int
@@ -164,21 +163,28 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                 if (result != 1)
                 {
-                    RedirectToAction("Error", "Home", new
+                    currentCard = card;
+                    return RedirectToAction("Error", "Home", new
                     {
-                        errorMsg = "Verification code text could not be sent. Please click 'Resend Verification Code'. " +
-                        "If problem persists, please try again later."
+                        errorMsg = "Verification code text could not be sent. If problem persists, please try again later."
                     });
                 }
+                else
+                {
+                    currentCard = card;
+                    return RedirectToAction("Confirm", "Home", card);
+                }
+                
             }
         }
 
 
         // checks if mobile number verification entered by user is correct
-        public void CheckVerificationNumber(Card card)
+        public void CheckVerificationNumber(Card currentCard)
         {
             using (LoyayContext context = new LoyayContext())
             {
+                var card = currentCard;
                 SqlParameter mobNum = new SqlParameter("@MobileNumber", card.CH_MPHONE)
                 {
                     SqlDbType = SqlDbType.VarChar
@@ -201,7 +207,10 @@ namespace FreshSpotRewardsWebApp.Controllers
                 }
                 else
                 {
-                    RedirectToAction("Error", "Home", new { errorMsg = "Verification code was incorrect. Please try again." });
+                    RedirectToAction("Error", "Home", new
+                        {
+                            errorMsg = "Verification code was incorrect. Please try again."
+                    });
                 }
             }
         }

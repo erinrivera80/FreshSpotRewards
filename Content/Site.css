@@ -60,12 +60,12 @@ body {
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
-    max-width: 400px;
     line-height: 30px;
-}
+    padding-bottom: 1em;
+}*/
 
 .top-row {
     padding-top: 5em;
@@ -75,7 +75,7 @@ textarea {
     background: url('../Assets/hottiefslogo.jpg');
     background-size: contain;
     background-repeat: no-repeat;
-    height: 600px;
+    height: 500px;
 }
 
 .right-col {
@@ -106,12 +106,11 @@ textarea {
 .form-horizontal {
     width: 80%;
     margin: 0 auto;
+    font-size: 25px;
 }
 
 .form-section {
-    font-size: 25px;
-    opacity: 1;
-    z-index: 100;
+    justify-content: center;
 }
 
 .formbox {
@@ -121,10 +120,6 @@ textarea {
 .form-indent {
     margin-top: 1em;
     margin-left: 2em;
-}
-
-.numval {
-    justify-content: center;
 }
 
 .verBtn {
@@ -142,6 +137,20 @@ textarea {
     font-weight: 600;
     font-size: 16px;
 }
+
+.verify-form {
+    height: 50vh;
+    justify-content: center;
+}
+.verify-form > label{
+    display: block;
+    padding: 3em 0;
+}
+.verify-input {
+    padding-bottom: 1em;
+    display: inline-block;
+}
+
 
 /* THANKS PAGE STYLING*/
 

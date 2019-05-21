@@ -1,10 +1,8 @@
-﻿@Model FreshSpotRewardsWebApp.Models.Card
+﻿@model FreshSpotRewardsWebApp.Models.Card
 
 @{
     ViewBag.Title = "Fresh Spot Rewards";
     ViewBag.CreateError = "";
-    ViewBag.SendError = "";
-    ViewBag.VerError = "";
 }
 
 
@@ -22,10 +20,9 @@
     </div>
 </div>
 
-<div class="container">
-    @Html.Partial("SignUpPartialView");
-    @*<div class="enrollment-form">
-        @using (Ajax.BeginForm("Enroll", "Card", new AjaxOptions { HttpMethod = "POST" }))
+<div class="container-fluid">
+    <div class="enrollment-form">
+        @using (Html.BeginForm("Create", "Card", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
             
@@ -55,56 +52,6 @@
                 </div>
             </div>
         }
-
-        <div class="hidden" id="mobNumPanel">
-            @using (Ajax.BeginForm("SendVerificationCode", "Card", new AjaxOptions { HttpMethod = "POST" } ))
-            {
-                @Html.AntiForgeryToken()
-
-                <div class="form-horizontal text-white">
-                    <div class="form-section container" id="signUpDiv">
-                        <p> A six-digit confirmation code will sent via text to your number. If this number is incorrect, please correct it below.</p>
-                        <div class="form-group formbox mt-5">
-                            @Html.LabelFor(m => m.CH_MPHONE, "Mobile Number", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
-                            <div class="col-md-8">
-                                @Html.EditorFor(m => m.CH_MPHONE, new { htmlAttributes = new { @class = "form-control required", @id = "mobNumBox2"} })
-                            </div>
-                        </div>
-
-                        <div class="form-group formbox mt-5">
-                            <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Send Code" 
-                                   onclick="sendCodeClick()"/>
-                        </div>
-                        <div class="error">
-                            @ViewBag.SendError;
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-        <div class="hidden" id="verifyPanel">
-            @using (Ajax.BeginForm("CheckVerificationNumber", "Card", new AjaxOptions { HttpMethod = "POST" }))
-            {
-                <div class="form-horizontal text-white">
-                    <div class="form-section container" id="verifyDiv">
-                        <div class="form-group formbox mt-5">
-                            @Html.LabelFor(m => m.VerificationCode, "Verification Code", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
-                            <div class="col-md-8">
-                                @Html.EditorFor(m => m.VerificationCode, new { htmlAttributes = new { @class = "form-control required" } })
-                            </div>
-                        </div>
-
-                        <div class="form-group formbox mt-5">
-                            <input type="submit" class="btn btn-lg subBtn formbox" id="verifySubmit" value="Verify Code"
-                                   onclick="verifyCodeClick()" />
-                        </div>
-                        <div class="error">
-                            @ViewBag.VerError
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>*@
     </div>
 </div>
 
