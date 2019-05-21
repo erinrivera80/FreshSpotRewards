@@ -33,7 +33,17 @@ namespace FreshSpotRewardsWebApp.Controllers
             {
                 CheckForLDROptIn(card);
             }
-            return RedirectToAction("Error", "Home");
+            return View("Index", "Home", card);
+        }
+
+        [ValidateAntiForgeryToken]
+        public Card Enroll(Card card)
+        {
+            if (ModelState.IsValid)
+            {
+                CheckForLDROptIn(card);
+            }
+            return card;
         }
 
         // check LoyaltyDetailRewardsOptIn_T_EC for MobileNumber to check for prior optin
@@ -48,7 +58,7 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                 if (priorOptIn != null)
                 {
-                    RedirectToAction("PriorOptIn", "Home");
+                    RedirectToAction("PriorOptIn", "Home", card);
                 }
                 else
                 {
@@ -69,8 +79,8 @@ namespace FreshSpotRewardsWebApp.Controllers
                     .FirstOrDefault();
                 if (oldCard != null)
                 {
-                    oldCard.CH_MPHONE = card.CH_MPHONE;
-                    UpdateCardData(card);
+                    oldCard.Email = card.Email;
+                    UpdateCardData(oldCard);
                 }
                 else
                 {
@@ -134,9 +144,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                 SqlParameter skus = new SqlParameter("@SkuGroups", skuGroups);
                 SqlParameter cardID = new SqlParameter("@CardID", card.CardID);
                 var query = context.Database.ExecuteSqlCommand("LoyaltyDetailRewardOptIn_S_EC @SkuGroups, @CardID", skus, cardID);
-            }
-
-            RedirectToAction("Thanks", "Home");
+            };
         }
 
         //END - function chain for initial sign up page
@@ -156,7 +164,7 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                 if (result != 1)
                 {
-                    RedirectToAction("Verify", new
+                    RedirectToAction("Error", "Home", new
                     {
                         errorMsg = "Verification code text could not be sent. Please click 'Resend Verification Code'. " +
                         "If problem persists, please try again later."
@@ -193,7 +201,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                 }
                 else
                 {
-                    RedirectToAction("Error", "Home", new { errorMsg = "Verification Code is incorrect. Please try again."});
+                    RedirectToAction("Error", "Home", new { errorMsg = "Verification code was incorrect. Please try again." });
                 }
             }
         }

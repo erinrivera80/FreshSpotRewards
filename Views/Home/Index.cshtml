@@ -1,4 +1,4 @@
-﻿@model FreshSpotRewardsWebApp.Models.Card
+﻿@Model FreshSpotRewardsWebApp.Models.Card
 
 @{
     ViewBag.Title = "Fresh Spot Rewards";
@@ -23,9 +23,9 @@
 </div>
 
 <div class="container">
-
-    <div class="enrollment-form">
-        @using (Html.BeginForm("Create", "Card", FormMethod.Post))
+    @Html.Partial("SignUpPartialView");
+    @*<div class="enrollment-form">
+        @using (Ajax.BeginForm("Enroll", "Card", new AjaxOptions { HttpMethod = "POST" }))
         {
             @Html.AntiForgeryToken()
             
@@ -57,7 +57,7 @@
         }
 
         <div class="hidden" id="mobNumPanel">
-            @using (Html.BeginForm("SendVerificationCode", "Card", FormMethod.Post))
+            @using (Ajax.BeginForm("SendVerificationCode", "Card", new AjaxOptions { HttpMethod = "POST" } ))
             {
                 @Html.AntiForgeryToken()
 
@@ -83,7 +83,7 @@
             }
         </div>
         <div class="hidden" id="verifyPanel">
-            @using (Html.BeginForm("CheckVerificationNumber", "Card", FormMethod.Post))
+            @using (Ajax.BeginForm("CheckVerificationNumber", "Card", new AjaxOptions { HttpMethod = "POST" }))
             {
                 <div class="form-horizontal text-white">
                     <div class="form-section container" id="verifyDiv">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             }
-        </div>
+        </div>*@
     </div>
 </div>
 
