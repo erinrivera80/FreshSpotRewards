@@ -23,7 +23,6 @@ namespace FreshSpotRewardsWebApp.Controllers
         public ActionResult Thanks()
         {
             ViewBag.Title = "Thanks for signing up for Fresh Spot Rewards!";
-
             return View();
         }
 
@@ -35,7 +34,7 @@ namespace FreshSpotRewardsWebApp.Controllers
         public ActionResult Error(string errorMsg)
         {
             ViewBag.VerError = errorMsg;
-            return View("Error", "Home");
+            return View(errorMsg);
         }
 
         public ActionResult Verify(Card card)
@@ -46,7 +45,8 @@ namespace FreshSpotRewardsWebApp.Controllers
 
         public ActionResult Confirm(Card card)
         {
-            return View("Confirm", "Home", card);
+            ViewBag.card = card;
+            return View(card);
         }
 
     }

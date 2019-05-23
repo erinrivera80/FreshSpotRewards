@@ -34,19 +34,21 @@ body {
     margin: 8px 25px;
 }
 
+.navbar-collapse {
+    padding: 0;
+}
+
 .nav-logo img
 {
     height: 60px;
 }
 
 .nav-icon {
-    padding-left: 1em;
+    padding-left: 1.5em;
     height: 50px;
 }
 
-.navbar-collapse {
-    padding-top: 1em;
-}
+
 
 .icon-bar {
     background-color: white;

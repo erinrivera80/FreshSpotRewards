@@ -8,7 +8,12 @@
     <link href="https://fonts.googleapis.com/css?family=Titan+One" rel="stylesheet">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <!-- jQuery library -->
+    <!-- Popper JS -->
+    <!-- Latest compiled JavaScript -->
 </head>
 <body>
     <div class="navbar navbar-expand-lg">
@@ -20,7 +25,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <div class="mr-auto">
-                    <a  class="nav-logo navbar-brand" href="@Url.Action("Index", "Home")">
+                    <a  class="nav-logo" href="@Url.Action("Index", "Home")">
                         <img src="~/Assets/freshSpotLogo.png"  alt="Fresh Spot logo" />
                     </a>
                 </div>
@@ -64,6 +69,7 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 

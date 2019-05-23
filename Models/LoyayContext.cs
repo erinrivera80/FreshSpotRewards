@@ -59,6 +59,9 @@ namespace FreshSpotRewardsWebApp.Models
                 .Property(e => e.VerificationCode)
                 .HasColumnName("RESERVED1");
 
+            modelBuilder.Entity<Card>()
+                .Property(e => e.AccountNumber);
+
             modelBuilder.Entity<LoyaltyDetailRewardOptIn>()
                 .Property(e => e.LoyaltyDetailRewardSKUGroupID);
 

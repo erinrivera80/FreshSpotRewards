@@ -6,7 +6,7 @@ using System.Data.Entity.Core.Objects;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
-using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using FreshSpotRewardsWebApp.Models;
 
@@ -16,7 +16,8 @@ namespace FreshSpotRewardsWebApp.Controllers
     {
         private readonly string skuGroups = "1017353,1017368,1017369,1017371,1017370,1017372";
 
-        
+        private readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["LoyayContext"].ConnectionString;
+
         // GET: Card/Create
         public ActionResult Create()
         {
@@ -33,6 +34,11 @@ namespace FreshSpotRewardsWebApp.Controllers
             {
                 CheckForLDROptIn(card);
             }
+            else
+            {
+                RedirectToAction("Error", "Home", new { errorMessage = "There was an error with sign up. Please try again." });
+            }
+
             return RedirectToAction("Verify", "Home", card);
         }
 
@@ -43,7 +49,11 @@ namespace FreshSpotRewardsWebApp.Controllers
             {
                 var priorOptIn = new LoyaltyDetailRewardOptIn();
                 priorOptIn = context.LoyaltyDetailRewardOptIns
-                    .Where(o => o.MobilePhone == card.CH_MPHONE && o.LoyaltyDetailRewardSKUGroupID == 1017353)
+                    .Where(o => o.MobilePhone == card.CH_MPHONE
+                        && o.LoyaltyDetailRewardSKUGroupID == 1017353)
+                        //|| o.LoyaltyDetailRewardSKUGroupID == 1017370
+                        //|| o.LoyaltyDetailRewardSKUGroupID == 1017371
+                        //|| o.LoyaltyDetailRewardSKUGroupID == 1017372)
                     .FirstOrDefault();
 
                 if (priorOptIn != null)
@@ -70,7 +80,8 @@ namespace FreshSpotRewardsWebApp.Controllers
                 if (oldCard != null)
                 {
                     oldCard.Email = card.Email;
-                    UpdateCardData(oldCard);
+                    SaveCardToSession(oldCard);
+                    EnrollFreshSpotRewards(oldCard);
                 }
                 else
                 {
@@ -104,37 +115,91 @@ namespace FreshSpotRewardsWebApp.Controllers
                 card.CardID = (int)cardID.Value;
             }
 
-            UpdateCardData(card);
+            ActivateCardEnrollment(card);
         }
 
-        // Adds email and mobile number to new Card record
-        public Card UpdateCardData(Card card)
+        public Card GetAcctNumberFromCardID(Card card)
         {
             using (LoyayContext context = new LoyayContext())
             {
-                var dbCard = context.Cards.SingleOrDefault(c => c.CardID == card.CardID);
-                if (dbCard != null)
-                {
-                    dbCard.CH_MPHONE = card.CH_MPHONE;
-                    dbCard.Email = card.Email;
-                    dbCard.AddDate = DateTime.Now;
-                    context.SaveChanges();
-                }
-                EnrollFreshSpotRewards(card);
+                var dbCard = context.Cards.Where(x => x.CardID == card.CardID).FirstOrDefault();
+                card.AccountNumber = dbCard.AccountNumber;
                 return card;
             }
         }
 
+        // Runs stored proc to activate card enrollment
+        public void ActivateCardEnrollment(Card card)
+        {
+            GetAcctNumberFromCardID(card);
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "CardholderEnrollmentRequest_S_EC";
+
+                    cmd.Parameters.Add("@IssuerID", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_FNAME", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_LNAME", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_HADDR1", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_HADDR2", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_HCITY", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_HSTATE", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@Country", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_HZIP", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_HPHONE", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_WPHONE", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@phonefax", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = card.Email;
+                    cmd.Parameters.Add("@CH_SSN", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_BNKACCT", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@CH_ABA", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@BankName", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@BankCity", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@UserDefine1", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@UserDefine2", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@UserDefine3", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@UserDefine4", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@UserDefine5", SqlDbType.VarChar).Value = DBNull.Value;
+                    cmd.Parameters.Add("@AccountNumber", SqlDbType.VarChar).Value = card.AccountNumber;
+                    cmd.Parameters.Add("@MobileNumber", SqlDbType.VarChar).Value = card.CH_MPHONE;
+                    cmd.Parameters.Add("@Return", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    int activateID;
+
+                    conn.Open();
+
+                    cmd.CommandTimeout = 240;
+                    cmd.ExecuteNonQuery();
+
+                    activateID = (int)cmd.Parameters["@Return"].Value;
+
+
+                    if (activateID < 10)
+                    {
+                        RedirectToAction("Error", "Home", new { errorMessage = "Something went wrong with card activation. Please try again later." });
+                    } else
+                    {
+                        EnrollFreshSpotRewards(card);
+                    }
+                }
+                
+            }
+        }
+
         // Enrolls in either FSR or the combo-club for Reward Spot members
-        public void EnrollFreshSpotRewards(Card card)
+        public ActionResult EnrollFreshSpotRewards(Card card)
         {
             using (var context = new LoyayContext())
             {
-                // TO-DO: Add mobile number parameter
                 SqlParameter skus = new SqlParameter("@SkuGroups", skuGroups);
                 SqlParameter cardID = new SqlParameter("@CardID", card.CardID);
                 var query = context.Database.ExecuteSqlCommand("LoyaltyDetailRewardOptIn_S_EC @SkuGroups, @CardID", skus, cardID);
-                
+                SaveCardToSession(card);
+
+                return View("Verify", "Home", card);
             };
         }
 
@@ -142,75 +207,121 @@ namespace FreshSpotRewardsWebApp.Controllers
         {
             Card cardData = new Card();
             cardData = card;
-            Session["Card"] = cardData;
+            Session["Card"] = cardData;            
         }
 
         //END - function chain for initial sign up page
 
         // BEGIN - function chain for Verification code chain
         // Sends verification code via text
-        public ActionResult SendVerificationCode(Card currentCard)
+        public ActionResult SendVerificationCode(Card cardInput)
+        {
+            // pull Card from session
+            Card card = null;
+            if (Session["Card"] != null)
+            {
+                card = Session["Card"] as Card;
+            }
+            else
+            {
+                RedirectToAction("Error", "Home", new { errorMessage = "The card information did not save properly. Please try again." });
+            }
+
+            // update new mobile number if changed
+            // TO DO - Need to verify number change not HSR member/LDR opt in
+            if (cardInput.CH_MPHONE != card.CH_MPHONE)
+            {
+                card.CH_MPHONE = cardInput.CH_MPHONE;
+                UpdateCardMobileNumber(card);
+            }
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "SendMobilePhoneValidationCodeText_S_EC";
+
+                    cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = 206700750;
+                    cmd.Parameters.Add("@Return", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    int result;
+
+                    conn.Open();
+
+                    cmd.CommandTimeout = 240;
+                    cmd.ExecuteNonQuery();
+
+                    result = (int)cmd.Parameters["@Return"].Value;
+
+                    if (result != 0)
+                    {
+                            return RedirectToAction("Error", "Home", new { errorMessage = "Something went wrong with card activation. Please try again later." });
+                    } else
+                    {
+                        return RedirectToAction("Confirm", "Home", card);
+                    }
+                }
+            }
+ 
+        }
+
+        // Adds mobile number to Card record if different than record (at Verification Input for customer to confirm/change mobile number)
+        public void UpdateCardMobileNumber(Card card)
         {
             using (LoyayContext context = new LoyayContext())
             {
-                var card = currentCard;
-                SqlParameter cardID = new SqlParameter("@CardID", card.CardID)
+                var dbCard = context.Cards.SingleOrDefault(c => c.CardID == card.CardID);
+                if (dbCard != null)
                 {
-                    SqlDbType = SqlDbType.Int
-                };
-
-                var result = context.Database.ExecuteSqlCommand("SendMobilePhoneValidationCodeText_S_EC @CardID", cardID);
-
-                if (result != 1)
-                {
-                    currentCard = card;
-                    return RedirectToAction("Error", "Home", new
-                    {
-                        errorMsg = "Verification code text could not be sent. If problem persists, please try again later."
-                    });
+                    dbCard.CH_MPHONE = card.CH_MPHONE;
+                    context.SaveChanges();
                 }
-                else
-                {
-                    currentCard = card;
-                    return RedirectToAction("Confirm", "Home", card);
-                }
-                
             }
         }
 
 
         // checks if mobile number verification entered by user is correct
-        public void CheckVerificationNumber(Card currentCard)
+        public ActionResult CheckVerificationNumber(Card cardInput)
         {
-            using (LoyayContext context = new LoyayContext())
+            Card card = new Card
             {
-                var card = currentCard;
-                SqlParameter mobNum = new SqlParameter("@MobileNumber", card.CH_MPHONE)
-                {
-                    SqlDbType = SqlDbType.VarChar
-                };
-                SqlParameter cardID = new SqlParameter("@CardID", card.CardID)
-                {
-                    SqlDbType = SqlDbType.Int
-                };
-                SqlParameter validCode = new SqlParameter("@ValidationCode", card.VerificationCode)
-                {
-                    SqlDbType = SqlDbType.VarChar
-                };
+                CardID = 206700750,
+                CH_MPHONE = "5027597903",
+                VerificationCode = cardInput.VerificationCode
+            };
 
-                var result = context.Database.ExecuteSqlCommand("CheckMobileValidationCode_S_EC @MobileNumber, @CardID, @ValidationCode",
-                    mobNum, cardID, validCode);
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "CheckMobileValidationCode_S_EC";
 
-                if (result == 0)
-                {
-                    RedirectToAction("Thanks", "Home");
-                }
-                else
-                {
-                    RedirectToAction("Error", "Home", new
-                        {
-                            errorMsg = "Verification code was incorrect. Please try again."
-                    });
+                    cmd.Parameters.Add("@MobileNumber", SqlDbType.VarChar).Value = card.CH_MPHONE;
+                    cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID;
+                    cmd.Parameters.Add("@ValidationCode", SqlDbType.VarChar).Value = card.VerificationCode;
+                    cmd.Parameters.Add("@Return", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    int result;
+
+                    conn.Open();
+
+                    cmd.CommandTimeout = 240;
+                    cmd.ExecuteNonQuery();
+
+                    result = (int)cmd.Parameters["@Return"].Value;
+
+                    if (result != 0)
+                    {
+                        return RedirectToAction("Error", "Home", new { errorMessage = "Verification code was incorrect. Please try again." });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Thanks", "Home");
+                    }
                 }
             }
         }

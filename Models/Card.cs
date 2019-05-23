@@ -38,6 +38,8 @@ namespace FreshSpotRewardsWebApp.Models
 
         [Column("RESERVED1")]
         public string VerificationCode { get; set; }
+
+        public string AccountNumber { get; set; }
     };
 
 }
