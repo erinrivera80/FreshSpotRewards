@@ -9,8 +9,8 @@
 <div class="container">
     <div class="row top-row">
         <div class="bkgd col-lg-5"> </div>
-        <div class="col-lg-1"> </div>
-        <div class="right-col col-lg-6">
+        <div class="col-lg-1"></div>
+        <div class="right-col col-lg-5">
             <h4>Use your mobile number to earn FREE pizza!</h4>
 
             <h1 class="main-cta">Sign up now for Fresh Spot Rewards, and get a FREE Hunk A Pizza&reg;!</h1>
@@ -20,35 +20,63 @@
     </div>
 </div>
 
+<div class="container-fluid existingRS">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>Are you an existing Reward Spot member?</h1>
+        </div>
+     </div>
+    <div class="row buttonDiv">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-3">
+            <input type="button" class="btn btn-lg btn-success rsBtn " value="Yes, I'm a Reward Spot member" id="yesRSmember" onclick="isRSMember()" />
+        </div>
+        <div class="col-lg-3">
+            <input type="button" class="btn btn-lg btn-danger rsBtn" value="No, I'm not a Reward Spot member" id=" noRSmember" onclick="notRSMember()" />
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+</div>
+
 <div class="container-fluid">
-    <div class="enrollment-form">
-        @using (Html.BeginForm("Create", "Card", FormMethod.Post))
+    <div class="row top-row"></div>
+    
+    <div class="enrollment-form" id="signUpDiv">
+        @using (Html.BeginForm("LookUpRewardSpot", "Card"))
         {
             @Html.AntiForgeryToken()
             
             <div class="form-horizontal text-white">
-                <div class="form-section container" id="signUpDiv">
+                <div class="form-section container" id="lookUpDiv">
 
-                    <div class="form-group formbox mt-5">
-                        @Html.LabelFor(m => m.Email, "Email Address", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control required" } })
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="btn-group btn-group-lg  text-dark" role="group">
+                                <h5>Search by:</h5>
+                                <button type="button" class="btn btn-success" id="emailInput" value="email">Email</button>
+                                <button type="button" class="btn btn-success" id="mobNoInput" value="mobile">Mobile Number</button>
+                                <button type="button" class="btn btn-success" id="acctNoInput" value="cardNumber">Card Number</button>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="emailSearchInput" />
                         </div>
                     </div>
-                    <div class="form-group formbox mt-5">
-                        @Html.LabelFor(m => m.CH_MPHONE, "Mobile Number", htmlAttributes: new { @class = "control-label col-md-4 text-white" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(m => m.CH_MPHONE, new { htmlAttributes = new { @class = "form-control required", @id = "mobNumBox1"} })
+                    <div class="row tp2em">
+                        <div class="col-lg-4">
+
                         </div>
-                    </div>
-                        <div class="form-group formbox mt-5">
-                            <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Sign Me Up!"
-                                   onclick="signUpClick()"/>
+                        <div class="col-lg-4">
+                            <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Find my Reward Spot card"
+                                   onclick="lookUpRSNumber()" />
                         </div>
-                    <div class="error">
-                        @ViewBag.CreateError
+                        <div class="col-lg-4">
+
+                        </div>
+
                     </div>
-                    
+
                 </div>
             </div>
         }
@@ -57,25 +85,27 @@
 
 <script type="text/javascript">
 
-    function signUpClick() {
-        $('#signUpDiv').addClass('hidden');
-        $('#mobNumPanel').removeClass('hidden');
+    function notRSMember() {
+        $("#signUpDiv").removeClass('hidden');
+        $('#existingRS').addClass('hidden');
+        callSignUpPage();
     };
 
-    function sendCodeClick() {
-        $('#mobNumPanel').addClass('hidden');
-        $('#verifyPanel').removeClass('hidden');
-    };
+    function isRSMember() {
+        $('#hsLookupForm').removeClass('hidden');
+        $('#existingRS').addClass('hidden');
+    }
 
-    function verifyCodeClick() {
+    function callSignUpPage() {
+        $.ajax({
+            url: '@Url.Action("SignUp", "Home")',
+            type: 'GET'
+        });
+    }
 
-    };
-
-    var numInput = document.getElementById('mobNumBox1');
-    var numCopy = document.getElementById('mobNumBox2');
-    numInput.onkeyup = function () {
-        numCopy.value = numInput.value;
-    };
+    function lookUpRSNumber(searchData) {
+        
+    }
 
 </script>
 

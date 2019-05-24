@@ -15,7 +15,11 @@ body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     background-color: black !important;
-    color: white !important;
+    color: white;
+}
+
+.tp2em {
+    padding-top: 2em;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -25,21 +29,21 @@ body {
 .navbar {
     background-color: red;
     align-content: center;
-    height: 6em;
 }
 
 .navbar-nav a {
     color: white;
     font-size: 30px;
-    margin: 8px 25px;
+    margin-top: 1em;
 }
 
 .navbar-collapse {
-    padding: 0;
+   padding: 15px 0 !important;
 }
 
 .nav-logo img
 {
+    margin-top: 10px;
     height: 60px;
 }
 
@@ -47,8 +51,6 @@ body {
     padding-left: 1.5em;
     height: 50px;
 }
-
-
 
 .icon-bar {
     background-color: white;
@@ -81,21 +83,21 @@ textarea {
 }
 
 .right-col {
-    height: auto;
-    width: auto;
     text-align: center;
 }
 
 .main-cta {
     font-size: 50px;
     font-family: 'Bemio', sans-serif;
-    padding: 0.75em 0;
 }
 
 .logo-cta {
     width: 250px;
 }
 
+[class*="col-"]:not(:first-child) {
+    margin-top: 40px;
+}
 .sub-cta {
     padding: 0.75em 0;
     line-height: 1.5;
@@ -104,6 +106,16 @@ textarea {
 .enrollment-form {
     color: white !important;
 }
+
+.existingRS {
+    text-align: center;
+}
+
+.buttonDiv {
+    margin-top: 5em;
+}
+
+/* FORM STYLING */
 
 .form-horizontal {
     width: 80%;

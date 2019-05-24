@@ -49,5 +49,10 @@ namespace FreshSpotRewardsWebApp.Controllers
             return View(card);
         }
 
+        public ActionResult SignUp()
+        {
+            return View();
+        }
+
     }
 }

@@ -90,6 +90,41 @@ namespace FreshSpotRewardsWebApp.Controllers
             }
         }
 
+        public Card HotSpotAccountLookup(Card card)
+        {
+            using (LoyayContext context = new LoyayContext())
+            {
+                Card oldCard = new Card();
+                if (card.Email != null || card.Email != "")
+                {
+                    oldCard = context.Cards
+                        .Where(c => c.Email == card.Email)
+                        .Where(c => c.ProgramID == 76)
+                        .OrderByDescending(o => o.AddDate)
+                        .FirstOrDefault();
+                }
+                else if (card.CH_MPHONE != null || card.CH_MPHONE != "")
+                {
+                    oldCard = context.Cards
+                        .Where(c => c.CH_MPHONE == card.CH_MPHONE)
+                        .Where(c => c.ProgramID == 76)
+                        .OrderByDescending(o => o.AddDate)
+                        .FirstOrDefault();
+                }
+                else if (card.AccountNumber != null || card.AccountNumber != "")
+                {
+                    oldCard = context.Cards
+                        .Where(c => c.AccountNumber == card.AccountNumber)
+                        .Where(c => c.ProgramID == 76)
+                        .OrderByDescending(o => o.AddDate)
+                        .FirstOrDefault();
+                }
+               
+                return oldCard;
+            }
+        }
+
+
         // Get next unassigned Loyay card
         public void GetNextCard(Card card)
         {
