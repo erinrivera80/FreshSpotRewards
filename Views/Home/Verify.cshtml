@@ -2,13 +2,17 @@
 
 @{
     ViewBag.Title = "Fresh Spot Rewards";
-    ViewBag.VerError = "";
+    TempData["ErrorMessage"] = "";
 }
 
 
 <div class="container">
     <div class="row top-row">
-        <div class ="bkgd col-lg-5"> </div>
+        <div class="bkgd col-lg-5">
+            <div>
+                <img class="hottieImg" src="~/Assets/HottieFreshSpot.png" />
+            </div>
+        </div>
         <div class="col-lg-1"> </div>
         <div class="right-col col-lg-6">
 
@@ -17,32 +21,32 @@
                 {
                     @Html.AntiForgeryToken()
 
+                    <div class="form-horizontal text-white">
+                        <div class="form-section container" id="signUpDiv">
+                            <h4>A six-digit security code will be sent to your mobile number. Please confirm it is correct before clicking submit. </h4>
 
-                    <div class="text-white verify-form form-section row form-box">
-                        <h3> A six-digit confirmation code will sent via text to your number. If this number is incorrect, please correct it below.</h3>
-                    </div>
+                            <div class="form-group formbox mt-5">
+                                @Html.LabelFor(m => m.CH_MPHONE, "Mobile Number", htmlAttributes: new { @class = "control-label text-white", @value = Model.CH_MPHONE })
+                                <div class="">
+                                    @Html.EditorFor(m => m.CH_MPHONE, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group formbox mt-5">
+                                <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Submit" />
+                            </div>
+                            <div class="error">
+                                @ViewBag.CreateError
+                            </div>
 
-                    <div class="row verify-input">
-                        <div class="form-group formbox row form-section">
-                            @Html.LabelFor(m => m.CH_MPHONE, "Mobile Number:", htmlAttributes: new { @class = "text-white" })
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="verify-input">
-                            @Html.EditorFor(m => m.CH_MPHONE, new { htmlAttributes = new { @class = "col-md-6 form-control required", @value = @ViewBag.MobileNumber } })
-                        </div>
-                        <div class="form-group formbox">
-                            <input type="submit" class="btn subBtn formbox" id="sendCodeBtn" value="Send Text Code"/>
                         </div>
                     </div>
                 }
                 <div>
-                    <p>@ViewBag.VerError</p>
+                    <p>@TempData["ErrorMessage"]</p>
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </div>
 
 

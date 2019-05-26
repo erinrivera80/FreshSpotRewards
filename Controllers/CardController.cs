@@ -32,37 +32,89 @@ namespace FreshSpotRewardsWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                CheckForLDROptIn(card);
+                if (CheckForLDROptIn(card) != 0) {
+                    TempData["ErrorMessage"] = "You have already enrolled in Fresh Spot rewards. Thanks, you're good to go!";
+                    return RedirectToAction("PriorSignIn", "Home");
+                }
+                CheckForHSRNumber(card);
             }
             else
             {
-                RedirectToAction("Error", "Home", new { errorMessage = "There was an error with sign up. Please try again." });
+                TempData["ErrorMessage"] = "There was an error with sign up. Please try again.";
+                RedirectToAction("Error", "Home");
             }
 
             return RedirectToAction("Verify", "Home", card);
         }
 
+
+        public ActionResult HotSpotAccountLookup(Card card)
+        {
+            using (LoyayContext context = new LoyayContext())
+            {
+                Card oldCard = new Card();
+                if (card.Email != null || card.Email != "")
+                {
+                    oldCard = context.Cards
+                        .Where(c => c.Email == card.Email)
+                        .Where(c => c.ProgramID == 76)
+                        .OrderByDescending(o => o.AddDate)
+                        .FirstOrDefault();
+                    oldCard.Email = card.Email;
+                }
+                else if (card.CH_MPHONE != null || card.CH_MPHONE != "")
+                {
+                    oldCard = context.Cards
+                        .Where(c => c.CH_MPHONE == card.CH_MPHONE)
+                        .Where(c => c.ProgramID == 76)
+                        .OrderByDescending(o => o.AddDate)
+                        .FirstOrDefault();
+                    oldCard.CH_MPHONE = card.CH_MPHONE;
+                }
+                else if (card.AccountNumber != null || card.AccountNumber != "")
+                {
+                    oldCard = context.Cards
+                        .Where(c => c.AccountNumber == card.AccountNumber)
+                        .Where(c => c.ProgramID == 76)
+                        .OrderByDescending(o => o.AddDate)
+                        .FirstOrDefault();
+                }
+
+                if (oldCard != null)
+                {
+                    SaveCardToSession(card);
+                    return RedirectToAction("Verify", "Home", oldCard);
+                }
+                else
+                {
+                    TempData["LookUpError"] = "No account was found. Try again, or click the 'Fresh Spot' logo and sign up for a new account";
+                    return RedirectToAction("Index", "Home");
+                }
+                
+            }
+        }
+
         // check LoyaltyDetailRewardsOptIn_T_EC for MobileNumber to check for prior optin
-        public void CheckForLDROptIn(Card card)
+        public int CheckForLDROptIn(Card card)
         {
             using (LoyayContext context = new LoyayContext())
             {
                 var priorOptIn = new LoyaltyDetailRewardOptIn();
                 priorOptIn = context.LoyaltyDetailRewardOptIns
                     .Where(o => o.MobilePhone == card.CH_MPHONE
-                        && o.LoyaltyDetailRewardSKUGroupID == 1017353)
-                        //|| o.LoyaltyDetailRewardSKUGroupID == 1017370
-                        //|| o.LoyaltyDetailRewardSKUGroupID == 1017371
-                        //|| o.LoyaltyDetailRewardSKUGroupID == 1017372)
+                        && o.LoyaltyDetailRewardSKUGroupID == 1017353
+                        || o.LoyaltyDetailRewardSKUGroupID == 1017370
+                        || o.LoyaltyDetailRewardSKUGroupID == 1017371
+                        || o.LoyaltyDetailRewardSKUGroupID == 1017372)
                     .FirstOrDefault();
 
                 if (priorOptIn != null)
                 {
-                    RedirectToAction("PriorOptIn", "Home", card);
+                    return 0;
                 }
                 else
                 {
-                    CheckForHSRNumber(card);
+                    return -1;
                 }
             }
         }
@@ -81,7 +133,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                 {
                     oldCard.Email = card.Email;
                     SaveCardToSession(oldCard);
-                    EnrollFreshSpotRewards(oldCard);
+                    RedirectToAction("Verify", "Home", oldCard);
                 }
                 else
                 {
@@ -90,39 +142,6 @@ namespace FreshSpotRewardsWebApp.Controllers
             }
         }
 
-        public Card HotSpotAccountLookup(Card card)
-        {
-            using (LoyayContext context = new LoyayContext())
-            {
-                Card oldCard = new Card();
-                if (card.Email != null || card.Email != "")
-                {
-                    oldCard = context.Cards
-                        .Where(c => c.Email == card.Email)
-                        .Where(c => c.ProgramID == 76)
-                        .OrderByDescending(o => o.AddDate)
-                        .FirstOrDefault();
-                }
-                else if (card.CH_MPHONE != null || card.CH_MPHONE != "")
-                {
-                    oldCard = context.Cards
-                        .Where(c => c.CH_MPHONE == card.CH_MPHONE)
-                        .Where(c => c.ProgramID == 76)
-                        .OrderByDescending(o => o.AddDate)
-                        .FirstOrDefault();
-                }
-                else if (card.AccountNumber != null || card.AccountNumber != "")
-                {
-                    oldCard = context.Cards
-                        .Where(c => c.AccountNumber == card.AccountNumber)
-                        .Where(c => c.ProgramID == 76)
-                        .OrderByDescending(o => o.AddDate)
-                        .FirstOrDefault();
-                }
-               
-                return oldCard;
-            }
-        }
 
 
         // Get next unassigned Loyay card
@@ -164,9 +183,13 @@ namespace FreshSpotRewardsWebApp.Controllers
         }
 
         // Runs stored proc to activate card enrollment
-        public void ActivateCardEnrollment(Card card)
+        public ActionResult ActivateCardEnrollment(Card card)
         {
-            GetAcctNumberFromCardID(card);
+            if (card.AccountNumber == null)
+            {
+                GetAcctNumberFromCardID(card);
+            }
+            
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -214,28 +237,16 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                     if (activateID < 10)
                     {
-                        RedirectToAction("Error", "Home", new { errorMessage = "Something went wrong with card activation. Please try again later." });
+                        TempData["ErrorMessage"] = "Card could not be activated.";
+                        return RedirectToAction("Error", "Home");
                     } else
                     {
-                        EnrollFreshSpotRewards(card);
+                        SaveCardToSession(card);
+                        return RedirectToAction("Verify", "Home");
                     }
                 }
                 
             }
-        }
-
-        // Enrolls in either FSR or the combo-club for Reward Spot members
-        public ActionResult EnrollFreshSpotRewards(Card card)
-        {
-            using (var context = new LoyayContext())
-            {
-                SqlParameter skus = new SqlParameter("@SkuGroups", skuGroups);
-                SqlParameter cardID = new SqlParameter("@CardID", card.CardID);
-                var query = context.Database.ExecuteSqlCommand("LoyaltyDetailRewardOptIn_S_EC @SkuGroups, @CardID", skus, cardID);
-                SaveCardToSession(card);
-
-                return View("Verify", "Home", card);
-            };
         }
 
         public void SaveCardToSession(Card card)
@@ -245,13 +256,8 @@ namespace FreshSpotRewardsWebApp.Controllers
             Session["Card"] = cardData;            
         }
 
-        //END - function chain for initial sign up page
-
-        // BEGIN - function chain for Verification code chain
-        // Sends verification code via text
-        public ActionResult SendVerificationCode(Card cardInput)
+        public Card GetCardFromSession()
         {
-            // pull Card from session
             Card card = null;
             if (Session["Card"] != null)
             {
@@ -259,8 +265,19 @@ namespace FreshSpotRewardsWebApp.Controllers
             }
             else
             {
-                RedirectToAction("Error", "Home", new { errorMessage = "The card information did not save properly. Please try again." });
+                TempData["ErrorMessage"] = "The card information did not save properly. Please try again.";
+                RedirectToAction("Error", "Home");
             }
+            return card;
+        }
+
+        //END - function chain for initial sign up page
+
+        // BEGIN - function chain for Verification code chain
+        // Sends verification code via text
+        public ActionResult SendVerificationCode(Card cardInput)
+        {
+            var card = GetCardFromSession();
 
             // update new mobile number if changed
             // TO DO - Need to verify number change not HSR member/LDR opt in
@@ -278,7 +295,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = "SendMobilePhoneValidationCodeText_S_EC";
 
-                    cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = 206700750;
+                    cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID;
                     cmd.Parameters.Add("@Return", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
 
                     int result;
@@ -292,9 +309,11 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                     if (result != 0)
                     {
-                            return RedirectToAction("Error", "Home", new { errorMessage = "Something went wrong with card activation. Please try again later." });
+                        TempData["ErrorMessage"] = "Something went wrong with the card activation";
+                        return RedirectToAction("Error", "Home");
                     } else
                     {
+                        SaveCardToSession(card);
                         return RedirectToAction("Confirm", "Home", card);
                     }
                 }
@@ -303,29 +322,31 @@ namespace FreshSpotRewardsWebApp.Controllers
         }
 
         // Adds mobile number to Card record if different than record (at Verification Input for customer to confirm/change mobile number)
-        public void UpdateCardMobileNumber(Card card)
+        public Card UpdateCardMobileNumber(Card card)
         {
             using (LoyayContext context = new LoyayContext())
             {
                 var dbCard = context.Cards.SingleOrDefault(c => c.CardID == card.CardID);
-                if (dbCard != null)
+                card.CH_MPHONE = dbCard.CH_MPHONE;
+                context.SaveChanges();
+
+                if (CheckForLDROptIn(card) == 0)
                 {
-                    dbCard.CH_MPHONE = card.CH_MPHONE;
-                    context.SaveChanges();
+                    return card;
+                } else
+                {
+                    RedirectToAction("PriorOptIn", "Home", card);
+                    return card;
                 }
+                
             }
         }
 
 
         // checks if mobile number verification entered by user is correct
-        public ActionResult CheckVerificationNumber(Card cardInput)
+        public ActionResult CheckVerificationNumber(Card inputCard)
         {
-            Card card = new Card
-            {
-                CardID = 206700750,
-                CH_MPHONE = "5027597903",
-                VerificationCode = cardInput.VerificationCode
-            };
+            var card = GetCardFromSession();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -351,14 +372,28 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                     if (result != 0)
                     {
-                        return RedirectToAction("Error", "Home", new { errorMessage = "Verification code was incorrect. Please try again." });
+                        TempData["ErrorMessage"] = "Verification Number was incorrect. Please try again.";
+                        return RedirectToAction("Error", "Home", card);
                     }
                     else
                     {
-                        return RedirectToAction("Thanks", "Home");
+                        EnrollFreshSpotRewards(card);
+                        return RedirectToAction("Thanks", "Home");                        
                     }
                 }
             }
+        }
+
+
+        // Enrolls in either FSR or the combo-club for Reward Spot members
+        public void EnrollFreshSpotRewards(Card card)
+        {
+            using (var context = new LoyayContext())
+            {
+                SqlParameter skus = new SqlParameter("@SkuGroups", skuGroups);
+                SqlParameter cardID = new SqlParameter("@CardID", card.CardID);
+                var query = context.Database.ExecuteSqlCommand("LoyaltyDetailRewardOptIn_S_EC @SkuGroups, @CardID", skus, cardID);
+            };
         }
     }
 }

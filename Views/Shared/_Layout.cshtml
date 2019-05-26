@@ -12,55 +12,66 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
     <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <!-- Latest compiled JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </head>
 <body>
-    <div class="navbar navbar-expand-lg">
+    
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="mr-auto">
-                    <a  class="nav-logo" href="@Url.Action("Index", "Home")">
-                        <img src="~/Assets/freshSpotLogo.png"  alt="Fresh Spot logo" />
-                    </a>
-                </div>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+            <a class="navbar-brand nav-logo" href="@Url.Action("Index", "Home")">
+                <img src="~/Assets/freshSpotLogo.png" alt="Fresh Spot logo" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a href="https://www.facebook.com/HotSpotStores" target="_blank">
+                            <img class="nav-icon" src="~/Assets/icon-fb.png" />
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://twitter.com/HotSpotStores" target="_blank">
+                            <img class="nav-icon" src="~/Assets/icon-tw.png" />
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.instagram.com/hotspotcstore/?hl=en" target="_blank">
+                            <img class="nav-icon" src="~/Assets/icon-ig.png" />
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.youtube.com/user/HotSpotStores" target="_blank">
+                            <img class="nav-icon" src="~/Assets/icon-yt.png" />
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="http://www.hotspotcstore.com" target="_blank">
+                            <img class="nav-icon" src="~/Assets/HSLogoBlackWhite.png" />
+                        </a>
+                    </li>
                 </ul>
-                <div class=" navbar-right">
-                    <a href="https://www.facebook.com/HotSpotStores" target="_blank">
-                        <img class="nav-icon" src="~/Assets/icon-fb.png" />
-                    </a>
-                    <a href="https://twitter.com/HotSpotStores" target="_blank">
-                        <img class="nav-icon" src="~/Assets/icon-tw.png" />
-                    </a>
-                    <a href="https://www.instagram.com/hotspotcstore/?hl=en" target="_blank">
-                        <img class="nav-icon" src="~/Assets/icon-ig.png" />
-                    </a>
-                    <a href="https://www.youtube.com/user/HotSpotStores" target="_blank">
-                        <img class="nav-icon" src="~/Assets/icon-yt.png" />
-                    </a>
-                    <a href="http://www.hotspotcstore.com" target="_blank">
-                        <img class="nav-icon" src="~/Assets/HSLogoBlackWhite.png" />
-                    </a>
-                </div>
             </div>
-        </div>
-    </div>
+            </div>
+        </nav>
+
     <div class="main-content">
         @RenderBody()
         <hr />
         <footer class="container">
             <div class="disclaimer">
                 <p>
+                    <hr />
+                </p>
+                <p>
                     Disclaimer: Valid at participating locations only. We will never sell or trade your information, which will only be used
-                    for the purpose of this loyalty program. Enter your mobile phone number as your alternate ID at the point of sale to redeem your free Hunk A Pizza&reg;. 
+                    for the purpose of this loyalty program. Enter your mobile phone number as your alternate ID at the point of sale to redeem your free Hunk A Pizza&reg;.
                     Limit one free Hunk A Pizza&reg; per participant. Void where prohibited.
                 </p>
             </div>

@@ -18,9 +18,6 @@ body {
     color: white;
 }
 
-.tp2em {
-    padding-top: 2em;
-}
 
 /* Set padding to keep content from hitting the edges */
 
@@ -43,7 +40,6 @@ body {
 
 .nav-logo img
 {
-    margin-top: 10px;
     height: 60px;
 }
 
@@ -52,8 +48,27 @@ body {
     height: 50px;
 }
 
+.nav-tabs {
+    border: 1px black solid;
+}
+
+.nav-tabs a, .nav-tabs a:visited, .nav-tabs a:active {
+    color:darkgray;
+    text-decoration: none;
+}
+
+.nav-tabs a:hover, .nav-tabs a:active {
+    color: white;
+    font-weight: 600;
+}
+
 .icon-bar {
     background-color: white;
+}
+
+.width-80 {
+    width: 80%;
+
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -72,14 +87,17 @@ textarea {
 }*/
 
 .top-row {
-    padding-top: 5em;
+    padding-top: 2em;
 }
 
 .bkgd {
-    background: url('../Assets/hottiefslogo.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 500px;
+    /*height: 500px;*/
+}
+
+.hottieImg {
+    width: 1200px;
+    margin-left: -400px;
+    margin-top: -50px;
 }
 
 .right-col {
@@ -105,10 +123,12 @@ textarea {
 
 .enrollment-form {
     color: white !important;
+    text-align: center;
 }
 
 .existingRS {
     text-align: center;
+    margin-top: 4em;
 }
 
 .buttonDiv {
@@ -165,23 +185,30 @@ textarea {
     display: inline-block;
 }
 
-
+.spacer {
+    height: 4em;
+}
 /* THANKS PAGE STYLING*/
 
 .thanks {
     padding-top: 7em;
 }
 
+.disclaimer {
+    margin-top: 5em;
+}
+
 
 /* MEDIA QUERIES */
-/*@media (max-width: 1200px) {
-    .signUpNow {
-        font-size: 50px;
-        margin: -5em 0 0 6em;
+@media (max-width: 900px) {
+    .hottieImg {
+        width: 100%;
+        position: center center;
+        margin: 0 auto;
     }
 }
 
-@media (max-width: 900px) {
+/*@media (max-width: 900px) {
     .signUpNow {
         font-size: 40px;
         margin: -3em 0 0 4em;
