@@ -21,7 +21,7 @@
                                 <h4>Please enter the six-digit security code below. </h4>
 
                                 <div class="form-group formbox mt-5">
-                                    @Html.LabelFor(m => m.VerificationCode, "Verification Code", htmlAttributes: new { @class = "control-label text-white", @value = Model.CH_MPHONE })
+                                    @Html.LabelFor(m => m.VerificationCode, "Verification Code", htmlAttributes: new { @class = "control-label text-white" })
                                     <div class="">
                                         @Html.EditorFor(m => m.VerificationCode, new { htmlAttributes = new { @class = "form-control" } })
                                     </div>

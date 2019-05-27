@@ -15,7 +15,6 @@ namespace FreshSpotRewardsWebApp.Controllers
     public class CardController : Controller
     {
         private readonly string skuGroups = "1017353,1017368,1017369,1017371,1017370,1017372";
-
         private readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["LoyayContext"].ConnectionString;
 
         // GET: Card/Create
@@ -82,7 +81,7 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                 if (oldCard != null)
                 {
-                    SaveCardToSession(card);
+                    SaveCardToSession(oldCard);
                     return RedirectToAction("Verify", "Home", oldCard);
                 }
                 else
@@ -314,7 +313,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                     } else
                     {
                         SaveCardToSession(card);
-                        return RedirectToAction("Confirm", "Home", card);
+                        return RedirectToAction("Confirm", "Home");
                     }
                 }
             }
@@ -327,7 +326,7 @@ namespace FreshSpotRewardsWebApp.Controllers
             using (LoyayContext context = new LoyayContext())
             {
                 var dbCard = context.Cards.SingleOrDefault(c => c.CardID == card.CardID);
-                card.CH_MPHONE = dbCard.CH_MPHONE;
+                dbCard.CH_MPHONE = card.CH_MPHONE;
                 context.SaveChanges();
 
                 if (CheckForLDROptIn(card) == 0)
@@ -358,7 +357,7 @@ namespace FreshSpotRewardsWebApp.Controllers
 
                     cmd.Parameters.Add("@MobileNumber", SqlDbType.VarChar).Value = card.CH_MPHONE;
                     cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID;
-                    cmd.Parameters.Add("@ValidationCode", SqlDbType.VarChar).Value = card.VerificationCode;
+                    cmd.Parameters.Add("@ValidationCode", SqlDbType.VarChar).Value = inputCard.VerificationCode;
                     cmd.Parameters.Add("@Return", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
 
                     int result;

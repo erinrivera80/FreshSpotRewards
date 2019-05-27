@@ -6,7 +6,6 @@ using System.Data.Entity.Spatial;
 
 namespace FreshSpotRewardsWebApp.Models
 { 
-
     [Table("Card")]
     public partial class Card
     {
@@ -39,7 +38,9 @@ namespace FreshSpotRewardsWebApp.Models
         [Column("RESERVED1")]
         public string VerificationCode { get; set; }
 
+        [Column("RESERVED2")]
+        public string SkuGroupIds { get; set; }
+
         public string AccountNumber { get; set; }
     };
-
 }

@@ -152,19 +152,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\freshSpotLogo.png" />
-    <Content Include="Assets\hbfreehunkbanner.PNG" />
-    <Content Include="Assets\Hottie0.25mp.jpg" />
-    <Content Include="Assets\Hottie2mp.jpg" />
-    <Content Include="Assets\HottieFreshSpot.png" />
-    <Content Include="Assets\HottieFS.png" />
     <Content Include="Assets\hottiefslogo.jpg" />
-    <Content Include="Assets\HottieTransp.png" />
     <Content Include="Assets\HSLogoBlackOrange.png" />
     <Content Include="Assets\HSLogoBlackWhite.png" />
     <Content Include="Assets\icon-fb.png" />
     <Content Include="Assets\icon-ig.png" />
     <Content Include="Assets\icon-tw.png" />
     <Content Include="Assets\icon-yt.png" />
+    <Content Include="Assets\thanksHBPizza.JPG" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />

@@ -9,8 +9,10 @@ namespace FreshSpotRewardsWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        
+        public ActionResult Index(string skuGroups)
         {
+            ViewBag.SkuGroups = skuGroups;
             return View();
         }
 
@@ -31,10 +33,10 @@ namespace FreshSpotRewardsWebApp.Controllers
             return View();
         }
 
-        public ActionResult Error(string errorMsg)
+        public ActionResult Error(TempDataDictionary keyValuePairs)
         {
-            ViewBag.VerError = errorMsg;
-            return View(errorMsg);
+            TempData["ErrorMessage"] = TempData["ErrorMessage"];
+            return View();
         }
 
         public ActionResult Verify(Card card)
@@ -45,8 +47,7 @@ namespace FreshSpotRewardsWebApp.Controllers
 
         public ActionResult Confirm(Card card)
         {
-            ViewBag.card = card;
-            return View(card);
+            return View();
         }
 
         public ActionResult SignUp(Card card)
