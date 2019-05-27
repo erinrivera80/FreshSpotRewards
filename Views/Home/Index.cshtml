@@ -10,7 +10,7 @@
     <div class="row top-row">
         <div class="bkgd col-lg-5">
             <div >
-                <img class="hottieImg" src="~/Assets/hottiefslogo.jpg" />
+                <img class="hottieImg" src="~/Assets/hottiefslogo.jpg" alt="Fresh Spot rewards logo" />
             </div>
         </div>
         <div class="col-lg-1"></div>
@@ -50,7 +50,7 @@
         <div class="error-text" id="lookup-error">@TempData["LookUpError"]</div>
     </div>
     
-    <div class="enrollment-form d-none" id="lookUpDiv">
+    <div class="enrollment-form d-none" id="lookUpPanel">
         <h1>How would you like to look up your Reward Spot account?</h1>
         @using (Html.BeginForm("HotSpotAccountLookUp", "Card", FormMethod.Post))
         {
@@ -112,7 +112,7 @@
 <script type="text/javascript">
 
     function isRSMember() {
-        $('#lookUpDiv').removeClass('d-none').addClass('d-block');
+        $('#lookUpPanel').removeClass('d-none').addClass('d-block');
         $('#existingRS').addClass('d-none');
     }
 
