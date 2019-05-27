@@ -18,6 +18,11 @@ body {
     color: white;
 }
 
+.validation-summary-valid {
+    display:none;
+}
+
+
 
 /* Set padding to keep content from hitting the edges */
 

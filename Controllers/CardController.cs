@@ -29,6 +29,11 @@ namespace FreshSpotRewardsWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Card card)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             if (ModelState.IsValid)
             {
                 if (CheckForLDROptIn(card) != 0) {
@@ -86,7 +91,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                 }
                 else
                 {
-                    TempData["LookUpError"] = "No account was found. Try again, or click the 'Fresh Spot' logo and sign up for a new account";
+                    TempData["ErrorMessage"] = "No account was found. Try again, or click the 'Fresh Spot' logo and sign up for a new account";
                     return RedirectToAction("Index", "Home");
                 }
                 
@@ -279,11 +284,13 @@ namespace FreshSpotRewardsWebApp.Controllers
             var card = GetCardFromSession();
 
             // update new mobile number if changed
-            // TO DO - Need to verify number change not HSR member/LDR opt in
-            if (cardInput.CH_MPHONE != card.CH_MPHONE)
+            if (card != null)
             {
-                card.CH_MPHONE = cardInput.CH_MPHONE;
-                UpdateCardMobileNumber(card);
+                if (cardInput.CH_MPHONE != card.CH_MPHONE)
+                {
+                    card.CH_MPHONE = cardInput.CH_MPHONE;
+                    UpdateCardMobileNumber(card);
+                }
             }
 
             using (SqlConnection conn = new SqlConnection(connectionString))

@@ -12,6 +12,10 @@ namespace FreshSpotRewardsWebApp.Controllers
         
         public ActionResult Index(string skuGroups)
         {
+            if (TempData["ErrorMessage"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            }
             ViewBag.SkuGroups = skuGroups;
             return View();
         }
@@ -28,14 +32,18 @@ namespace FreshSpotRewardsWebApp.Controllers
             return View();
         }
 
-        public ActionResult PriorSignIn()
+        public ActionResult PriorSignIn(Card card)
         {
-            return View();
+            if (TempData["ErrorMessage"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            }
+            return View(card);
         }
 
-        public ActionResult Error(TempDataDictionary keyValuePairs)
+        public ActionResult Error()
         {
-            TempData["ErrorMessage"] = TempData["ErrorMessage"];
+            ViewBag.ErrorMessage = TempData["ErrorMessage"];
             return View();
         }
 
