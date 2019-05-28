@@ -60,7 +60,7 @@ namespace FreshSpotRewardsWebApp.Models
                 .HasColumnName("RESERVED1");
 
             modelBuilder.Entity<Card>()
-                .Property(e => e.SkuGroupIds)
+                .Property(e => e.Source)
                 .HasColumnName("RESERVED2");
 
             modelBuilder.Entity<Card>()

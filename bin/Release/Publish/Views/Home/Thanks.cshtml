@@ -1,0 +1,31 @@
+﻿@model FreshSpotRewardsWebApp.Models.Card
+
+@{
+    ViewBag.Title = "Thanks for signing up for Fresh Spot Rewards!";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="bkgd col-lg-5">
+            <div class="thanksImg">
+                <img src="~/Assets/thanksHBPizza.jpg" alt="Thank you for signing up for Fresh Spot rewards." />
+            </div>
+        </div>
+        <div class="col-lg-1"> </div>
+        <div class="right-col col-lg-6">
+            <div class="thanks">
+                <h2 class="mt-4">@ViewBag.Title</h2>
+                <h3 class="mt-3">Don't forget to claim your free Hunk A Pizza&reg;!</h3>
+                <ul class="mt-5">
+                    <li>
+                        <h4>If you are a Rewards Spot member, select <strong>'Rewards Spot'</strong> at check out.</h4>
+                    </li>
+                    <li>
+                        <h4>If you're not a Rewards Spot member, select <strong>'Fresh Spot Rewards'</strong> at check out.</h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

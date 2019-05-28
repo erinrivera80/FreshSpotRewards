@@ -15,6 +15,7 @@ namespace FreshSpotRewardsWebApp.Controllers
     public class CardController : Controller
     {
         private readonly string skuGroups = "1017353,1017368,1017369,1017371,1017370,1017372";
+       
         private readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["LoyayContext"].ConnectionString;
 
         // GET: Card/Create
@@ -54,32 +55,47 @@ namespace FreshSpotRewardsWebApp.Controllers
 
         public ActionResult HotSpotAccountLookup(Card card)
         {
+            string cardNo = card.AccountNumber;
+            if (card.AccountNumber != null)
+            {
+                if (card.AccountNumber.Length == 11)
+                {
+                    card.AccountNumber = "62714" + cardNo;
+                }
+                else if (card.AccountNumber.Length == 12 )
+                {
+                    card.AccountNumber = "62714" + cardNo.Substring(0, 11);
+                }
+            }
             using (LoyayContext context = new LoyayContext())
             {
                 Card oldCard = new Card();
-                if (card.Email != null || card.Email != "")
+                if (card.Email != null)
                 {
                     oldCard = context.Cards
                         .Where(c => c.Email == card.Email)
-                        .Where(c => c.ProgramID == 76)
+                        .Where(c => c.ProgramID == 76 || c.ProgramID == 200000174)
+                        .Where(c => c.CH_STATUS == "P")
                         .OrderByDescending(o => o.AddDate)
                         .FirstOrDefault();
                     oldCard.Email = card.Email;
                 }
-                else if (card.CH_MPHONE != null || card.CH_MPHONE != "")
+                else if (card.CH_MPHONE != null)
                 {
                     oldCard = context.Cards
                         .Where(c => c.CH_MPHONE == card.CH_MPHONE)
-                        .Where(c => c.ProgramID == 76)
+                        .Where(c => c.ProgramID == 76 || c.ProgramID == 200000174)
+                        .Where(c => c.CH_STATUS == "P")
                         .OrderByDescending(o => o.AddDate)
                         .FirstOrDefault();
                     oldCard.CH_MPHONE = card.CH_MPHONE;
                 }
-                else if (card.AccountNumber != null || card.AccountNumber != "")
+                else if (card.AccountNumber != null)
                 {
                     oldCard = context.Cards
                         .Where(c => c.AccountNumber == card.AccountNumber)
-                        .Where(c => c.ProgramID == 76)
+                        .Where(c => c.ProgramID == 76  || c.ProgramID == 200000174)
+                        .Where(c => c.CH_STATUS == "P")
                         .OrderByDescending(o => o.AddDate)
                         .FirstOrDefault();
                 }
@@ -105,11 +121,12 @@ namespace FreshSpotRewardsWebApp.Controllers
             {
                 var priorOptIn = new LoyaltyDetailRewardOptIn();
                 priorOptIn = context.LoyaltyDetailRewardOptIns
-                    .Where(o => o.MobilePhone == card.CH_MPHONE
-                        && o.LoyaltyDetailRewardSKUGroupID == 1017353
-                        || o.LoyaltyDetailRewardSKUGroupID == 1017370
-                        || o.LoyaltyDetailRewardSKUGroupID == 1017371
-                        || o.LoyaltyDetailRewardSKUGroupID == 1017372)
+                    .Where(o => o.MobilePhone == card.CH_MPHONE)
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017353) 
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017368) 
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017369) 
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017370) 
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017372)
                     .FirstOrDefault();
 
                 if (priorOptIn != null)
@@ -341,7 +358,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                     return card;
                 } else
                 {
-                    RedirectToAction("PriorOptIn", "Home", card);
+                    RedirectToAction("PriorSignIn", "Home", card);
                     return card;
                 }
                 
@@ -379,7 +396,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                     if (result != 0)
                     {
                         TempData["ErrorMessage"] = "Verification Number was incorrect. Please try again.";
-                        return RedirectToAction("Error", "Home", card);
+                        return RedirectToAction("Confirm", "Home", card);
                     }
                     else
                     {

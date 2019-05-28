@@ -1,0 +1,234 @@
+﻿@font-face {
+    font-family: 'Bemio';
+    src: url('../fonts/Bemio.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: black !important;
+    color: white;
+}
+
+.validation-summary-valid {
+    display:none;
+}
+
+
+
+/* Set padding to keep content from hitting the edges */
+
+
+/* NAVBAR STYLING */
+.navbar {
+    background-color: red;
+    align-content: center;
+}
+
+.navbar-nav a {
+    color: white;
+    font-size: 30px;
+    margin-top: 1em;
+}
+
+.navbar-collapse {
+   padding: 15px 0 !important;
+}
+
+.nav-logo img
+{
+    height: 60px;
+}
+
+.nav-icon {
+    padding-left: 1.5em;
+    height: 50px;
+}
+
+.nav-tabs {
+    border: 1px black solid;
+}
+
+.nav-tabs a, .nav-tabs a:visited, .nav-tabs a:active {
+    color:darkgray;
+    text-decoration: none;
+}
+
+.nav-tabs a:hover, .nav-tabs a:active {
+    color: white;
+    font-weight: 600;
+}
+
+.icon-bar {
+    background-color: white;
+}
+
+.width-80 {
+    width: 80%;
+}
+
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    line-height: 30px;
+    padding-bottom: 1em;
+}*/
+
+.top-row {
+    padding-top: 2em;
+}
+
+.bkgd {
+    /*height: 500px;*/
+}
+
+.hottieImg {
+    width: 150%;
+    margin-left: -175px;
+}
+
+.right-col {
+    text-align: center;
+}
+
+.main-cta {
+    font-size: 50px;
+    font-family: 'Bemio', sans-serif;
+}
+
+.logo-cta {
+    width: 250px;
+}
+
+[class*="col-"]:not(:first-child) {
+    margin-top: 40px;
+}
+.sub-cta {
+    padding: 0.75em 0;
+    line-height: 1.5;
+}
+
+.enrollment-form {
+    color: white !important;
+    text-align: center;
+}
+
+.existingRS {
+    text-align: center;
+    margin-top: 4em;
+}
+
+.buttonDiv {
+    margin-top: 5em;
+}
+
+/* FORM STYLING */
+
+.form-horizontal {
+    width: 80%;
+    margin: 0 auto;
+    font-size: 25px;
+}
+
+.form-section {
+    justify-content: center;
+}
+
+.formbox {
+    margin-bottom: 2em;
+}
+
+.form-indent {
+    margin-top: 1em;
+    margin-left: 2em;
+}
+
+.verBtn {
+    background-color: red;
+    color: white;
+}
+
+.subBtn {
+    background-color: #4adb3b;
+    color: white;
+}
+
+.ver-error {
+    color: red;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.verify-form {
+    height: 50vh;
+    justify-content: center;
+}
+.verify-form > label{
+    display: block;
+    padding: 3em 0;
+}
+.verify-input {
+    padding-bottom: 1em;
+    display: inline-block;
+}
+
+.spacer {
+    height: 4em;
+}
+/* THANKS PAGE STYLING*/
+
+.thanks {
+    padding-top: 7em;
+}
+
+.disclaimer {
+    margin-top: 5em;
+}
+
+
+/* MEDIA QUERIES */
+@media (max-width: 900px) {
+    .hottieImg {
+        width: 100%;
+        position: center center;
+        margin: 0 auto;
+    }
+}
+
+/*@media (max-width: 900px) {
+    .signUpNow {
+        font-size: 40px;
+        margin: -3em 0 0 4em;
+    }
+}
+
+@media (max-width: 601px) {
+    .signUpNow {
+        font-size: 40px;
+        margin: -3em 0 0 1em;
+    }
+}
+
+@media (max-width: 600px) {
+    .signUpNow {
+        font-size: 30px;
+        margin: -3em 0 0 1em;
+    }
+}*/

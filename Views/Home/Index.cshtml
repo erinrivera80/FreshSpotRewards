@@ -7,7 +7,7 @@
 
 
 <div class="container">
-    <div class="row top-row">
+    <div class="row ">
         <div class="bkgd col-lg-5">
             <div >
                 <img class="hottieImg" src="~/Assets/hottiefslogo.jpg" alt="Fresh Spot rewards logo" />
@@ -17,7 +17,7 @@
         <div class="right-col col-lg-5">
             <h4>Use your mobile number to earn FREE pizza!</h4>
 
-            <h1 class="main-cta">Sign up now for Fresh Spot Rewards, and get a FREE Hunk A Pizza&reg;!</h1>
+            <h1 class="main-cta mt-3">Sign up now for Fresh Spot Rewards, and get a FREE Hunk A Pizza&reg;!</h1>
 
             <h3 class="sub-cta">Enter your mobile number when you purchase Hunt Brothers Pizza and get a free Hunk or whole pizza for every 7 you buy.</h3>
         </div>
@@ -51,7 +51,7 @@
     </div>
     
     <div class="enrollment-form d-none" id="lookUpPanel">
-        <h1>How would you like to look up your Reward Spot account?</h1>
+        <h1 class="mb-5 mt-5">How would you like to look up your Reward Spot account?</h1>
         @using (Html.BeginForm("HotSpotAccountLookUp", "Card", FormMethod.Post))
         {
             @Html.AntiForgeryToken()

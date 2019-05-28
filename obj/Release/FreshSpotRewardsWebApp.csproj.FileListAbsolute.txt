@@ -1,0 +1,5 @@
+C:\Projects\FreshSpotRewardsWebAppV2\FreshSpotRewardsWebApp\bin\EntityFramework.dll
+C:\Projects\FreshSpotRewardsWebAppV2\FreshSpotRewardsWebApp\bin\EntityFramework.xml
+C:\Projects\FreshSpotRewardsWebAppV2\FreshSpotRewardsWebApp\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Projects\FreshSpotRewardsWebAppV2\FreshSpotRewardsWebApp\bin\System.Web.Helpers.xml
+C:\Projects\FreshSpotRewardsWebAppV2\FreshSpotRewardsWebApp\bin\System.Web.WebPages.Deployment.xml

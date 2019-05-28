@@ -55,6 +55,7 @@ namespace FreshSpotRewardsWebApp.Controllers
 
         public ActionResult Confirm(Card card)
         {
+            ViewBag.ErrorMessage = TempData["ErrorMessage"];
             return View();
         }
 

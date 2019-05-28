@@ -43,7 +43,7 @@ namespace FreshSpotRewardsWebApp.Models
         public string VerificationCode { get; set; }
 
         [Column("RESERVED2")]
-        public string SkuGroupIds { get; set; }
+        public string Source { get; set; }
 
         public string AccountNumber { get; set; }
     };
