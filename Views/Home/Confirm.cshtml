@@ -34,9 +34,7 @@
                                 <div class="form-group formbox mt-5">
                                     <input type="submit" class="btn btn-lg subBtn formbox" id="fsrSubmit" value="Submit" />
                                 </div>
-                                <div class="mt-5" id="error-text">
-                                    @ViewBag.ErrorMessage
-                                </div>
+                                <div class="mb-5 mt-5"><h3 style="color:red">@TempData["ErrorMessage"]</h3></div>
 
                             </div>
                         </div>

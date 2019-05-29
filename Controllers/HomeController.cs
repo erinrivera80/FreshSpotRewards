@@ -10,13 +10,8 @@ namespace FreshSpotRewardsWebApp.Controllers
     public class HomeController : Controller
     {
         
-        public ActionResult Index(string skuGroups)
+        public ActionResult Index()
         {
-            if (TempData["ErrorMessage"] != null)
-            {
-                ViewBag.ErrorMessage = TempData["ErrorMessage"];
-            }
-            ViewBag.SkuGroups = skuGroups;
             return View();
         }
 

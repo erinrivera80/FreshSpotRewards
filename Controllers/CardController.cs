@@ -74,27 +74,25 @@ namespace FreshSpotRewardsWebApp.Controllers
                 {
                     oldCard = context.Cards
                         .Where(c => c.Email == card.Email)
-                        .Where(c => c.ProgramID == 76 || c.ProgramID == 200000174)
+                        .Where(c => c.ProgramID == 76)
                         .Where(c => c.CH_STATUS == "P")
                         .OrderByDescending(o => o.AddDate)
                         .FirstOrDefault();
-                    oldCard.Email = card.Email;
                 }
                 else if (card.CH_MPHONE != null)
                 {
                     oldCard = context.Cards
                         .Where(c => c.CH_MPHONE == card.CH_MPHONE)
-                        .Where(c => c.ProgramID == 76 || c.ProgramID == 200000174)
+                        .Where(c => c.ProgramID == 76)
                         .Where(c => c.CH_STATUS == "P")
                         .OrderByDescending(o => o.AddDate)
                         .FirstOrDefault();
-                    oldCard.CH_MPHONE = card.CH_MPHONE;
                 }
                 else if (card.AccountNumber != null)
                 {
                     oldCard = context.Cards
                         .Where(c => c.AccountNumber == card.AccountNumber)
-                        .Where(c => c.ProgramID == 76  || c.ProgramID == 200000174)
+                        .Where(c => c.ProgramID == 76)
                         .Where(c => c.CH_STATUS == "P")
                         .OrderByDescending(o => o.AddDate)
                         .FirstOrDefault();

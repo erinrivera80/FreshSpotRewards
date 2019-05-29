@@ -15,6 +15,7 @@ body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     background-color: black;
+    color: white !important;
 }
 
 #error-text {
