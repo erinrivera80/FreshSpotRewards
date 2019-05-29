@@ -27,17 +27,17 @@ namespace FreshSpotRewardsWebApp.Models
         [StringLength(1)]
         public string CH_STATUS { get; set; }
         
-        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "You must provide a valid email address")]
         [StringLength(50)]
         public string Email { get; set; }
 
-        [RegularExpression("([0-9]+)")]
+        [RegularExpression(@"([0-9]+)$", ErrorMessage = "Mobile number must be numeric only")]
         [StringLength(13, ErrorMessage = "Mobile number must be 10 digits", MinimumLength = 10)]
         public string CH_MPHONE { get; set; }
 
         public DateTime? AddDate { get; set; }
 
-        [RegularExpression("([0-9]+)")]
+        [RegularExpression("([0-9]+)", ErrorMessage = "Validation code must be numeric")]
         [StringLength(6, ErrorMessage = "Verification code requires 6 digits", MinimumLength = 6)]
         [Column("RESERVED1")]
         public string VerificationCode { get; set; }

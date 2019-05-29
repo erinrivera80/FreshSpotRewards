@@ -107,7 +107,8 @@ namespace FreshSpotRewardsWebApp.Controllers
                 else
                 {
                     TempData["ErrorMessage"] = "No account was found. Try again, or sign up for a new account";
-                    return RedirectToAction("Index", "Home");
+                    string url = string.Format("{0}#lookUpForm", Url.Action("Index", "Home"), 0);
+                    return Redirect(url);
                 }
                 
             }

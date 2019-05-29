@@ -49,10 +49,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/23/2017 13:15:20</publishTime>
     </File>
     <File Include="bin/FreshSpotRewardsWebApp.dll">
-      <publishTime>05/29/2019 11:24:57</publishTime>
+      <publishTime>05/29/2019 15:20:25</publishTime>
     </File>
     <File Include="bin/FreshSpotRewardsWebApp.pdb">
-      <publishTime>05/29/2019 11:24:57</publishTime>
+      <publishTime>05/29/2019 15:20:25</publishTime>
     </File>
     <File Include="bin/Google.Apis.Core.dll">
       <publishTime>05/09/2019 15:02:46</publishTime>
@@ -304,7 +304,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/13/2019 15:41:39</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>05/29/2019 10:20:35</publishTime>
+      <publishTime>05/29/2019 15:09:41</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>04/16/2019 12:58:44</publishTime>
@@ -469,25 +469,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/20/2019 12:38:32</publishTime>
     </File>
     <File Include="Views/Home/Confirm.cshtml">
-      <publishTime>05/29/2019 11:22:34</publishTime>
+      <publishTime>05/29/2019 12:23:05</publishTime>
     </File>
     <File Include="Views/Home/Error.cshtml">
-      <publishTime>05/27/2019 11:41:43</publishTime>
+      <publishTime>05/29/2019 12:23:24</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>05/29/2019 11:18:06</publishTime>
+      <publishTime>05/29/2019 15:13:28</publishTime>
     </File>
     <File Include="Views/Home/PriorSignIn.cshtml">
       <publishTime>05/28/2019 18:21:26</publishTime>
     </File>
     <File Include="Views/Home/SignUp.cshtml">
-      <publishTime>05/27/2019 12:01:55</publishTime>
+      <publishTime>05/29/2019 12:28:30</publishTime>
     </File>
     <File Include="Views/Home/Thanks.cshtml">
-      <publishTime>05/28/2019 18:22:49</publishTime>
+      <publishTime>05/29/2019 12:23:35</publishTime>
     </File>
     <File Include="Views/Home/Verify.cshtml">
-      <publishTime>05/27/2019 10:28:47</publishTime>
+      <publishTime>05/29/2019 12:22:56</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
       <publishTime>05/26/2019 15:01:23</publishTime>
@@ -499,7 +499,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/16/2019 12:58:44</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/29/2019 11:25:30</publishTime>
+      <publishTime>05/29/2019 15:20:26</publishTime>
     </File>
   </ItemGroup>
 </Project>
