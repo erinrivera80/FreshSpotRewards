@@ -14,12 +14,12 @@
 body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    background-color: black !important;
-    color: white;
+    background-color: black;
+    color: white !important;
 }
 
-.validation-summary-valid {
-    display:none;
+#error-text {
+    color: red !important;
 }
 
 
@@ -54,18 +54,28 @@ body {
 }
 
 .nav-tabs {
-    border: 1px black solid;
+    background-color: #161616;
 }
 
-.nav-tabs a, .nav-tabs a:visited, .nav-tabs a:active {
-    color:darkgray;
+.tab-content {
+    background-color: #303136;
+    color: #fff;
+    padding: 5px
+}
+
+.nav-tabs > li > a {
+    border: medium none;
     text-decoration: none;
+    color: gray;
 }
 
-.nav-tabs a:hover, .nav-tabs a:active {
-    color: white;
-    font-weight: 600;
-}
+        .nav-tabs > li > a:hover,
+        .nav-tabs > li > a:active {
+            background-color: #303136 !important;
+            
+            border-radius: 0;
+            color: #fff;
+        }
 
 .icon-bar {
     background-color: white;
@@ -126,7 +136,6 @@ textarea {
 }
 
 .enrollment-form {
-    color: white !important;
     text-align: center;
 }
 

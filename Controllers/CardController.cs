@@ -37,7 +37,8 @@ namespace FreshSpotRewardsWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                if (CheckForLDROptIn(card) != 0) {
+                if (CheckForLDROptIn(card) != 0)
+                {                
                     TempData["ErrorMessage"] = "You have already enrolled in Fresh Spot rewards. Thanks, you're good to go!";
                     return RedirectToAction("PriorSignIn", "Home");
                 }
@@ -105,7 +106,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "No account was found. Try again, or click the 'Fresh Spot' logo and sign up for a new account";
+                    TempData["ErrorMessage"] = "No account was found. Try again, or sign up for a new account";
                     return RedirectToAction("Index", "Home");
                 }
                 
@@ -127,7 +128,7 @@ namespace FreshSpotRewardsWebApp.Controllers
                     .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017372)
                     .FirstOrDefault();
 
-                if (priorOptIn != null)
+                if (priorOptIn == null)
                 {
                     return 0;
                 }
@@ -153,6 +154,29 @@ namespace FreshSpotRewardsWebApp.Controllers
                     oldCard.Email = card.Email;
                     SaveCardToSession(oldCard);
                     RedirectToAction("Verify", "Home", oldCard);
+                }
+                else
+                {
+                    CheckForLoyayCard(card);
+                }
+            }
+        }
+
+        // check Card table for existing Loyay card
+        public void CheckForLoyayCard(Card card)
+        {
+            using (LoyayContext context = new LoyayContext())
+            {
+                var loyayCard = new Card();
+                loyayCard = context.Cards
+                    .Where(c => c.CH_STATUS == "P" && c.CH_MPHONE == card.CH_MPHONE && c.ProgramID == 200000174)
+                    .OrderByDescending(o => o.AddDate)
+                    .FirstOrDefault();
+                if (loyayCard != null)
+                {
+                    loyayCard.Email = card.Email;
+                    SaveCardToSession(loyayCard);
+                    RedirectToAction("Verify", "Home", loyayCard);
                 }
                 else
                 {

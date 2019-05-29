@@ -15,12 +15,6 @@ namespace FreshSpotRewardsWebApp.Controllers
             return View();
         }
 
-        public ActionResult CardIndex(Card card)
-        {
-            ViewBag.MobNum = card.CH_MPHONE;
-            return View();
-        }
-
         public ActionResult Thanks()
         {
             ViewBag.Title = "Thanks for signing up for Fresh Spot Rewards!";
@@ -29,28 +23,21 @@ namespace FreshSpotRewardsWebApp.Controllers
 
         public ActionResult PriorSignIn(Card card)
         {
-            if (TempData["ErrorMessage"] != null)
-            {
-                ViewBag.ErrorMessage = TempData["ErrorMessage"];
-            }
             return View(card);
         }
 
         public ActionResult Error()
         {
-            ViewBag.ErrorMessage = TempData["ErrorMessage"];
             return View();
         }
 
         public ActionResult Verify(Card card)
         {
-            ViewBag.MobileNumber = card.CH_MPHONE;
             return View(card);
         }
 
         public ActionResult Confirm(Card card)
         {
-            ViewBag.ErrorMessage = TempData["ErrorMessage"];
             return View();
         }
 
