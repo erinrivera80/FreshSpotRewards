@@ -191,7 +191,6 @@ textarea {
 
 .verify-form {
     height: 50vh;
-    justify-content: center;
 }
 .verify-form > label{
     display: block;

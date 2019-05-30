@@ -79,7 +79,8 @@ namespace FreshSpotRewardsWebApp.Models
                 .Property(e => e.AddDate);
 
             modelBuilder.Entity<LoyaltyDetailRewardOptIn>()
-                .Property(e => e.ID);
+                .Property(e => e.CardID)
+                .HasColumnName("ID");
 
             modelBuilder.Entity<LoyaltyDetailRewardOptIn>()
                 .Property(e => e.LinkSource);

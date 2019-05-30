@@ -13,7 +13,8 @@ namespace FreshSpotRewardsWebApp.Models
 
         public int? LoyaltyDetailRewardSKUGroupID { get; set; }
 
-        public int? ID { get; set; }
+        [Column("ID")]
+        public int? CardID { get; set; }
 
         public int? EntityCategoryID { get; set; }
 
