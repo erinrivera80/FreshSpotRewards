@@ -21,5 +21,9 @@ namespace FreshSpotRewardsWebApp.Models
 
         public DateTime? AddDate { get; set; }
 
+        public string LinkSource { get; set; }
+        
+        public string Campaign { get; set; }
+
     };
 }

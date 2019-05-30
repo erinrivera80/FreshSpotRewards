@@ -14,8 +14,10 @@ namespace FreshSpotRewardsWebApp.Controllers
 {
     public class CardController : Controller
     {
-        private readonly string skuGroups = "1017353,1017368,1017369,1017371,1017370,1017372";
-       
+        public string skuGroupIds;
+        public string linkSource;
+        public string campaign;
+        private readonly string skuGroups = "1017353,1017368,1017369,1017371,1017370,1017372";       
         private readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["LoyayContext"].ConnectionString;
 
         // GET: Card/Create
@@ -23,6 +25,25 @@ namespace FreshSpotRewardsWebApp.Controllers
         {
             Card card = new Card();
             return View(card);
+        }
+
+        public void SaveUrlParameters(Card card)
+        {
+            if (TempData["UrlSkuGroups"] != null)
+            {
+                skuGroupIds = TempData["UrlSkuGroups"].ToString();
+                card.Source = skuGroupIds;
+            }
+            if (TempData["UrlLinkSource"] != null)
+            {
+                linkSource = TempData["UrlLinkSource"].ToString();
+                card.Source = skuGroupIds;
+            }
+            if (TempData["UrlCampaign"] != null)
+            {
+                campaign = TempData["UrlCampaign"].ToString();
+                card.Source = skuGroupIds;
+            }
         }
 
         // POST: Card/Create
@@ -37,6 +58,8 @@ namespace FreshSpotRewardsWebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                SaveUrlParameters(card);
+
                 if (CheckForLDROptIn(card) != 0)
                 {                
                     TempData["ErrorMessage"] = "You have already enrolled in Fresh Spot rewards. Thanks, you're good to go!";
@@ -430,16 +453,31 @@ namespace FreshSpotRewardsWebApp.Controllers
             }
         }
 
+        public void PushUrlParamsToDb (Card card)
+        {
+            using (LoyayContext context = new LoyayContext())
+            {
+                LoyaltyDetailRewardOptIn loyayOptIn = context.LoyaltyDetailRewardOptIns
+                    .Where(l => l.ID == card.CardID)
+                    .FirstOrDefault();
+                loyayOptIn.LinkSource = linkSource;
+                loyayOptIn.Campaign = campaign;
+                context.SaveChanges();
+            }
+        }
+
 
         // Enrolls in either FSR or the combo-club for Reward Spot members
         public void EnrollFreshSpotRewards(Card card)
         {
             using (var context = new LoyayContext())
             {
-                SqlParameter skus = new SqlParameter("@SkuGroups", skuGroups);
+                SqlParameter skus = new SqlParameter("@SkuGroups", skuGroupIds);
                 SqlParameter cardID = new SqlParameter("@CardID", card.CardID);
                 var query = context.Database.ExecuteSqlCommand("LoyaltyDetailRewardOptIn_S_EC @SkuGroups, @CardID", skus, cardID);
             };
+
+            PushUrlParamsToDb(card);
         }
     }
 }

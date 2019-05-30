@@ -12,6 +12,9 @@ namespace FreshSpotRewardsWebApp.Controllers
         
         public ActionResult Index()
         {
+            TempData["UrlSkuGroups"] = Request.QueryString["utm_source"];
+            TempData["UrlLinkSource"] = Request.QueryString["utm_medium"];
+            TempData["UrlCampaign"] = Request.QueryString["utm_campaign"];
             return View();
         }
 

@@ -81,6 +81,12 @@ namespace FreshSpotRewardsWebApp.Models
             modelBuilder.Entity<LoyaltyDetailRewardOptIn>()
                 .Property(e => e.ID);
 
+            modelBuilder.Entity<LoyaltyDetailRewardOptIn>()
+                .Property(e => e.LinkSource);
+
+            modelBuilder.Entity<LoyaltyDetailRewardOptIn>()
+                .Property(e => e.Campaign);
+
 
         }
     }
