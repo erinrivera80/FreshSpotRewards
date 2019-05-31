@@ -120,11 +120,11 @@ namespace FreshSpotRewardsWebApp.Controllers
                 var priorOptIn = new LoyaltyDetailRewardOptIn();
                 priorOptIn = context.LoyaltyDetailRewardOptIns
                     .Where(o => o.MobilePhone == card.CH_MPHONE)
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017353) 
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017368) 
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017369) 
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017370) 
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017372)
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017353") 
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017368") 
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017369") 
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017370") 
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017372")
                     .FirstOrDefault();
 
                 if (priorOptIn == null)
@@ -183,8 +183,6 @@ namespace FreshSpotRewardsWebApp.Controllers
                 }
             }
         }
-
-
 
         // Get next unassigned Loyay card
         public void GetNextCard(Card card)
@@ -432,6 +430,12 @@ namespace FreshSpotRewardsWebApp.Controllers
         // Enrolls in either FSR or the combo-club for Reward Spot members
         public void EnrollFreshSpotRewards(Card card)
         {
+            LoyaltyDetailRewardOptIn optIn = new LoyaltyDetailRewardOptIn();
+            if (Session["LDROptIn"] != null)
+            {
+                optIn = Session["LDROptIn"] as LoyaltyDetailRewardOptIn;
+            }
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand())
@@ -440,10 +444,10 @@ namespace FreshSpotRewardsWebApp.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = "LoyaltyDetailRewardOptIn_S_EC";
 
-                    cmd.Parameters.Add("@LoyaltyDetailRewardSKUGroupIDs", SqlDbType.VarChar).Value = TempData["UrlSkuGroups"];
+                    cmd.Parameters.Add("@LoyaltyDetailRewardSKUGroupIDs", SqlDbType.VarChar).Value = optIn.LoyaltyDetailRewardSKUGroupID;
                     cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID;
-                    cmd.Parameters.Add("@LinkSource", SqlDbType.VarChar).Value = TempData["UrlLinkSource"];
-                    cmd.Parameters.Add("@Campaign", SqlDbType.VarChar).Value = TempData["UrlCampaign"];
+                    cmd.Parameters.Add("@LinkSource", SqlDbType.VarChar).Value = optIn.LinkSource;
+                    cmd.Parameters.Add("@Campaign", SqlDbType.VarChar).Value = optIn.Campaign;
 
                     conn.Open();
 

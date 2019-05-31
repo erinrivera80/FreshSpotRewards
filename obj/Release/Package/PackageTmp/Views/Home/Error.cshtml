@@ -1,0 +1,29 @@
+﻿@model FreshSpotRewardsWebApp.Models.Card
+
+@{
+    ViewBag.Title = "Oops, something went wrong!";
+    ViewBag.ErrorMessage = "";
+}
+
+
+<div class="container">
+    <div class="row top-row">
+        <div class="bkgd col-lg-5">
+            <div>
+                <img class="hottieImg" src="~/Assets/hottiefslogo.jpg" />
+            </div>
+        </div>
+        <div class="col-lg-1"> </div>
+        <div class="right-col col-lg-6">
+            <div class="thanks">
+                <h2 class="mt-5">@ViewBag.Title</h2>
+
+                <h2 class="mt-5">An error occurred while processing your request.</h2>
+                
+                <div class="mb-5 mt-5"><h3 style="color:red">@TempData["ErrorMessage"]</h3></div>
+
+                <h3 class="mt-5">Please try again, or click the Fresh Spot logo to start over.</h3>
+            </div>
+        </div>
+    </div>
+</div>

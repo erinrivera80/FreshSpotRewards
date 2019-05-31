@@ -12,9 +12,12 @@ namespace FreshSpotRewardsWebApp.Controllers
         
         public ActionResult Index()
         {
-            TempData["UrlSkuGroups"] = Request.QueryString["utm_source"];
-            TempData["UrlLinkSource"] = Request.QueryString["utm_medium"];
-            TempData["UrlCampaign"] = Request.QueryString["utm_campaign"];
+            LoyaltyDetailRewardOptIn OptInRecord = new LoyaltyDetailRewardOptIn();
+
+            OptInRecord.LoyaltyDetailRewardSKUGroupID = Request.QueryString["utm_source"];
+            OptInRecord.LinkSource = Request.QueryString["utm_medium"];
+            OptInRecord.Campaign = Request.QueryString["utm_campaign"];
+            Session["LDROptIn"] = OptInRecord;
             return View();
         }
 
