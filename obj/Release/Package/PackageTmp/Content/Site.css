@@ -115,7 +115,7 @@ textarea {
 
 .hottieImg {
     width: 150%;
-    margin-left: -175px;
+    margin-left: -25%;
 }
 
 .right-col {
@@ -209,6 +209,10 @@ textarea {
 .thanks {
     padding-top: 7em;
 }
+
+/*.thanksImg {
+    width: 100%;
+}*/
 
 .disclaimer {
     margin-top: 5em;

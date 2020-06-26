@@ -28,7 +28,7 @@
 
             <h1 class="main-cta mt-3">Sign up now for Fresh Spot Rewards, and get a FREE Hunk A Pizza&reg;!</h1>
 
-            <h3 class="sub-cta">Enter your mobile number when you purchase Hunt Brothers Pizza and get a free Hunk or whole pizza for every 7 you buy.</h3>
+            <h3 class="sub-cta">Enter your mobile number when you purchase Hunt Brothers&reg; Pizza and get a free Hunk or whole pizza for every 7 you buy.</h3>
         </div>
     </div>
 </div>
@@ -65,23 +65,11 @@
         <div class="form-horizontal text-white">
             <div class="container" id="lookUpDiv">
                 <div class="tab-content">
-                   <ul class="nav nav-tabs justify-content-around">
-                        <li class="active"><a data-toggle="tab" class="col-xs-12" href="#emailInput"> Email </a></li>
-                        <li><a data-toggle="tab" class="col-xs-12" href="#mobileInput"> Mobile Number </a></li>
+                    <ul class="nav nav-tabs justify-content-around">
+                        <li class="active"><a data-toggle="tab" class="col-xs-12" href="#mobileInput"> Mobile Number </a></li>
+                        @*<li><a data-toggle="tab" class="col-xs-12" href="#hPhoneInput"> Home Phone </a></li>*@
                         <li><a data-toggle="tab" class="col-xs-12" href="#cardNoInput"> Card Number </a></li>
                     </ul>
-
-                    <div id="emailInput" class="tab-pane fade in active">
-                        <div class="row">
-                            <div class="col-md-12 mt-3">
-                                @Html.LabelFor(m => m.Email, "Email Address", htmlAttributes: new { @class = "control-label text-white" })
-                            </div>
-                            <div class="col-md-12 mt-1">
-                                @Html.TextBoxFor(m => m.Email, new { htmlAttributes = new { @class = "form-control"} })
-                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
 
                     <div id="mobileInput" class="tab-pane fade">
                         <div class="row">
@@ -89,10 +77,22 @@
                                 @Html.LabelFor(m => m.CH_MPHONE, "Mobile Number", htmlAttributes: new { @class = "control-label text-white" })
                             </div>
                             <div class="col-md-12 mt-1">
-                                @Html.TextBoxFor(m => m.CH_MPHONE, new { htmlAttributes = new { @class = "form-control"} })
+                                @Html.TextBoxFor(m => m.CH_MPHONE, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
                         </div>
                     </div>
+
+                    @*<div id="hPhoneInput" class="tab-pane fade in active">
+                        <div class="row">
+                            <div class="col-md-12 mt-3">
+                                @Html.LabelFor(m => m.CH_HPHONE, "Home Phone", htmlAttributes: new { @class = "control-label text-white" })
+                            </div>
+                            <div class="col-md-12 mt-1">
+                                @Html.TextBoxFor(m => m.CH_HPHONE, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(m => m.CH_HPHONE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>*@
 
                     <div id="cardNoInput" class="tab-pane fade">
                         <div class="row">
@@ -100,7 +100,7 @@
                                 @Html.LabelFor(m => m.AccountNumber, "Card Number", htmlAttributes: new { @class = "control-label text-white" })
                             </div>
                             <div class="col-md-12 mt-1">
-                                @Html.TextBoxFor(m => m.AccountNumber, new { htmlAttributes = new { @class = "form-control"} })
+                                @Html.TextBoxFor(m => m.AccountNumber, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
                         </div>
                     </div>

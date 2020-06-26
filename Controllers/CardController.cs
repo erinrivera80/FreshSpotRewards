@@ -69,19 +69,10 @@ namespace FreshSpotRewardsWebApp.Controllers
             using (LoyayContext context = new LoyayContext())
             {
                 Card oldCard = new Card();
-                if (card.Email != null)
+                if (card.CH_MPHONE != null)
                 {
                     oldCard = context.Cards
-                        .Where(c => c.Email == card.Email)
-                        .Where(c => c.ProgramID == 76)
-                        .Where(c => c.CH_STATUS == "P")
-                        .OrderByDescending(o => o.AddDate)
-                        .FirstOrDefault();
-                }
-                else if (card.CH_MPHONE != null)
-                {
-                    oldCard = context.Cards
-                        .Where(c => c.CH_MPHONE == card.CH_MPHONE)
+                        .Where(c => (c.CH_MPHONE == card.CH_MPHONE || c.CH_HPHONE == card.CH_MPHONE))
                         .Where(c => c.ProgramID == 76)
                         .Where(c => c.CH_STATUS == "P")
                         .OrderByDescending(o => o.AddDate)
@@ -100,7 +91,15 @@ namespace FreshSpotRewardsWebApp.Controllers
                 if (oldCard != null)
                 {
                     SaveCardToSession(oldCard);
-                    return RedirectToAction("Verify", "Home", oldCard);
+                    if (CheckForLDROptIn(card) != 0)
+                    {
+                        TempData["ErrorMessage"] = "You have already enrolled in Fresh Spot rewards. Thanks, you're good to go!";
+                        return RedirectToAction("PriorSignIn", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Verify", "Home", oldCard);
+                    }
                 }
                 else
                 {
@@ -120,11 +119,12 @@ namespace FreshSpotRewardsWebApp.Controllers
                 var priorOptIn = new LoyaltyDetailRewardOptIn();
                 priorOptIn = context.LoyaltyDetailRewardOptIns
                     .Where(o => o.MobilePhone == card.CH_MPHONE)
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017353") 
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017368") 
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017369") 
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017370") 
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == "1017372")
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017353
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017368
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017369
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017370
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017371
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017372)
                     .FirstOrDefault();
 
                 if (priorOptIn == null)
@@ -317,48 +317,58 @@ namespace FreshSpotRewardsWebApp.Controllers
         // Sends verification code via text
         public ActionResult SendVerificationCode(Card cardInput)
         {
-            var card = GetCardFromSession();
-
-            // update new mobile number if changed
-            if (card != null)
+            try
             {
-                if (cardInput.CH_MPHONE != card.CH_MPHONE)
+                var card = GetCardFromSession();
+
+                // update new mobile number if changed
+                if (card != null)
                 {
-                    card.CH_MPHONE = cardInput.CH_MPHONE;
-                    UpdateCardMobileNumber(card);
-                }
-            }
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.Connection = conn;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "SendMobilePhoneValidationCodeText_S_EC";
-
-                    cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID;
-                    cmd.Parameters.Add("@Return", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
-
-                    int result;
-
-                    conn.Open();
-
-                    cmd.CommandTimeout = 240;
-                    cmd.ExecuteNonQuery();
-
-                    result = (int)cmd.Parameters["@Return"].Value;
-
-                    if (result != 0)
+                    if (cardInput.CH_MPHONE != card.CH_MPHONE)
                     {
-                        TempData["ErrorMessage"] = "Something went wrong with the card activation";
-                        return RedirectToAction("Error", "Home");
-                    } else
-                    {
-                        SaveCardToSession(card);
-                        return RedirectToAction("Confirm", "Home");
+                        card.CH_MPHONE = cardInput.CH_MPHONE;
+                        UpdateCardMobileNumber(card);
                     }
                 }
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = conn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = "SendMobilePhoneValidationCodeText_S_EC";
+
+                        cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID;
+                        cmd.Parameters.Add("@Return", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                        int result;
+
+                        conn.Open();
+
+                        cmd.CommandTimeout = 240;
+                        cmd.ExecuteNonQuery();
+
+                        result = (int)cmd.Parameters["@Return"].Value;
+
+                        if (result != 0)
+                        {
+                            TempData["ErrorMessage"] = "Something went wrong with the card activation";
+                            return RedirectToAction("Error", "Home");
+                        }
+                        else
+                        {
+                            SaveCardToSession(card);
+                            return RedirectToAction("Confirm", "Home");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                new HomeController().LogError(ex);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("Error", "Home");
             }
  
         }
@@ -389,40 +399,47 @@ namespace FreshSpotRewardsWebApp.Controllers
         public ActionResult CheckVerificationNumber(Card inputCard)
         {
             var card = GetCardFromSession();
+            int ret;
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                using (SqlCommand cmd = new SqlCommand())
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    cmd.Connection = conn;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "CheckMobileValidationCode_S_EC";
-
-                    cmd.Parameters.Add("@MobileNumber", SqlDbType.VarChar).Value = card.CH_MPHONE;
-                    cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID;
-                    cmd.Parameters.Add("@ValidationCode", SqlDbType.VarChar).Value = inputCard.VerificationCode;
-                    cmd.Parameters.Add("@Return", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
-
-                    int result;
-
-                    conn.Open();
-
-                    cmd.CommandTimeout = 240;
-                    cmd.ExecuteNonQuery();
-
-                    result = (int)cmd.Parameters["@Return"].Value;
-
-                    if (result != 0)
+                    using (SqlCommand cmd = new SqlCommand())
                     {
-                        TempData["ErrorMessage"] = "Verification Number was incorrect. Please try again.";
-                        return RedirectToAction("Confirm", "Home", card);
-                    }
-                    else
-                    {
-                        EnrollFreshSpotRewards(card);
-                        return RedirectToAction("Thanks", "Home");                        
+                        cmd.Connection = conn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = "CheckMobileValidationCode_S_EC";
+
+                        cmd.Parameters.Add("@MobileNumber", SqlDbType.VarChar).Value = card.CH_MPHONE;
+                        cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID.ToString();
+                        cmd.Parameters.Add("@ValidationCode", SqlDbType.VarChar).Value = inputCard.VerificationCode;
+                        cmd.Parameters.Add("@Return", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                        conn.Open();
+
+                        cmd.CommandTimeout = 240;
+                        cmd.ExecuteNonQuery();
+
+                        ret = (int)cmd.Parameters["@Return"].Value;
                     }
                 }
+                if (ret != 0)
+                {
+                    TempData["ErrorMessage"] = "Verification Number was incorrect. Please try again.";
+                    return RedirectToAction("Confirm", "Home", card);
+                }
+                else
+                {
+                    EnrollFreshSpotRewards(card);
+                    return RedirectToAction("Thanks", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                new HomeController().LogError(ex);
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -430,31 +447,39 @@ namespace FreshSpotRewardsWebApp.Controllers
         // Enrolls in either FSR or the combo-club for Reward Spot members
         public void EnrollFreshSpotRewards(Card card)
         {
-            LoyaltyDetailRewardOptIn optIn = new LoyaltyDetailRewardOptIn();
-            if (Session["LDROptIn"] != null)
+            try
             {
-                optIn = Session["LDROptIn"] as LoyaltyDetailRewardOptIn;
-            }
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand())
+                LoyaltyDetailRewardOptIn optIn = new LoyaltyDetailRewardOptIn();
+                if (Session["LDROptIn"] != null)
                 {
-                    cmd.Connection = conn;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "LoyaltyDetailRewardOptIn_S_EC";
-
-                    cmd.Parameters.Add("@LoyaltyDetailRewardSKUGroupIDs", SqlDbType.VarChar).Value = optIn.LoyaltyDetailRewardSKUGroupID;
-                    cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID;
-                    cmd.Parameters.Add("@LinkSource", SqlDbType.VarChar).Value = optIn.LinkSource;
-                    cmd.Parameters.Add("@Campaign", SqlDbType.VarChar).Value = optIn.Campaign;
-
-                    conn.Open();
-
-                    cmd.CommandTimeout = 240;
-                    cmd.ExecuteNonQuery();
-                    
+                    optIn = Session["LDROptIn"] as LoyaltyDetailRewardOptIn;
                 }
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = conn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = "LoyaltyDetailRewardOptIn_S_EC";
+
+                        cmd.Parameters.Add("@LoyaltyDetailRewardSKUGroupIDs", SqlDbType.VarChar).Value = optIn.LoyaltyDetailRewardSKUGroupIDs;
+                        cmd.Parameters.Add("@CardID", SqlDbType.VarChar).Value = card.CardID.ToString();
+                        cmd.Parameters.Add("@LinkSource", SqlDbType.VarChar).Value = "FSRWebsite";
+                        cmd.Parameters.Add("@Campaign", SqlDbType.VarChar).Value = optIn.Campaign.ToString();
+                        cmd.Parameters.Add("@PromoCode", SqlDbType.VarChar).Value = optIn.VendorPromoCode.ToString();
+
+                        conn.Open();
+
+                        cmd.CommandTimeout = 240;
+                        cmd.ExecuteNonQuery();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                new HomeController().LogError(ex);
             }
         }
     }

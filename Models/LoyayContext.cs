@@ -14,9 +14,29 @@ namespace FreshSpotRewardsWebApp.Models
 
         public virtual DbSet<Card> Cards { get; set; }
         public virtual DbSet<LoyaltyDetailRewardOptIn> LoyaltyDetailRewardOptIns { get; set; }
+        public virtual DbSet<ErrorLog> ErrorLog { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ErrorLog>()
+                .Property(e => e.ErrorSource)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ErrorLog>()
+                .Property(e => e.ErrorMessage)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ErrorLog>()
+                .Property(e => e.ModuleName)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ErrorLog>()
+                .Property(e => e.ClassName)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ErrorLog>()
+                .Property(e => e.MethodName)
+                .IsUnicode(false);
 
             modelBuilder.Entity<Card>()
                 .Property(e => e.M_IDNUM)
@@ -53,6 +73,10 @@ namespace FreshSpotRewardsWebApp.Models
 
             modelBuilder.Entity<Card>()
                 .Property(e => e.CH_MPHONE)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Card>()
+                .Property(e => e.CH_HPHONE)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Card>()

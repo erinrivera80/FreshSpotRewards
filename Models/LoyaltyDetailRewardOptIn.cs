@@ -11,7 +11,10 @@ namespace FreshSpotRewardsWebApp.Models
     {
         public int LoyaltyDetailRewardOptInID { get; set; }
 
-        public string LoyaltyDetailRewardSKUGroupID { get; set; }
+        [NotMapped]
+        public string LoyaltyDetailRewardSKUGroupIDs { get; set; }
+
+        public int LoyaltyDetailRewardSKUGroupID { get; set; }
 
         [Column("ID")]
         public int? CardID { get; set; }
@@ -25,6 +28,8 @@ namespace FreshSpotRewardsWebApp.Models
         public string LinkSource { get; set; }
         
         public string Campaign { get; set; }
+
+        public string VendorPromoCode { get; set; }
 
     };
 }

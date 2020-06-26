@@ -146,6 +146,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\ErrorLog.cs" />
     <Compile Include="Models\LoyaltyDetailRewardOptIn.cs" />
     <Compile Include="Models\LoyayContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

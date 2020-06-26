@@ -35,10 +35,12 @@ namespace FreshSpotRewardsWebApp.Models
         [StringLength(13, ErrorMessage = "Mobile number must be 10 digits", MinimumLength = 10)]
         public string CH_MPHONE { get; set; }
 
+        public string CH_HPHONE { get; set; }
+
         public DateTime? AddDate { get; set; }
 
         [RegularExpression("([0-9]+)", ErrorMessage = "Validation code must be numeric")]
-        [StringLength(6, ErrorMessage = "Verification code requires 6 digits", MinimumLength = 6)]
+        [StringLength(4, ErrorMessage = "Validation code requires 4 digits", MinimumLength = 4)]
         [Column("RESERVED1")]
         public string VerificationCode { get; set; }
 
