@@ -119,12 +119,16 @@ namespace FreshSpotRewardsWebApp.Controllers
                 var priorOptIn = new LoyaltyDetailRewardOptIn();
                 priorOptIn = context.LoyaltyDetailRewardOptIns
                     .Where(o => o.MobilePhone == card.CH_MPHONE)
-                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017353
-                    || o.LoyaltyDetailRewardSKUGroupID == 1017368
-                    || o.LoyaltyDetailRewardSKUGroupID == 1017369
+                    .Where(o => o.LoyaltyDetailRewardSKUGroupID == 1017372
                     || o.LoyaltyDetailRewardSKUGroupID == 1017370
                     || o.LoyaltyDetailRewardSKUGroupID == 1017371
-                    || o.LoyaltyDetailRewardSKUGroupID == 1017372)
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017555
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017556
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017539
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017538
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017537
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017540
+                    || o.LoyaltyDetailRewardSKUGroupID == 1017541)
                     .FirstOrDefault();
 
                 if (priorOptIn == null)
